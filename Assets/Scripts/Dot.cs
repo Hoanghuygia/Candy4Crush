@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,6 +9,7 @@ public class Dot : MonoBehaviour
     public int row;
     public int targetX;
     public int targetY;
+    public bool Matched = false;
     private GameObject otherDot;
     private Board board;
     private Vector2 firstTouchPosition;
@@ -27,6 +29,12 @@ public class Dot : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        FindMatches();
+        if (Matched)
+        {
+            SpriteRenderer mySprite = GetComponent<SpriteRenderer>();
+            mySprite.color = Color.white;
+        }
         targetX = column;
         targetY = row;
         if (Mathf.Abs(targetX - transform.position.x) > .1)
@@ -105,6 +113,33 @@ public class Dot : MonoBehaviour
             otherDot.GetComponent<Dot>().row += 1;
             row -= 1;
 
+        }
+    }
+    void FindMatches()
+    {
+        if(column > 0 && column < board.width - 1)
+        {
+            GameObject leftDot1 = board.allDots[column - 1, row];
+            GameObject rightDot1 = board.allDots[column + 1, row];
+            //add tag to each dot means that each dot in the prefab has each own unique name, such like it
+            if(leftDot1.tag == this.gameObject.tag && rightDot1.tag == this.gameObject.tag)
+            {
+                leftDot1.GetComponent<Dot>().Matched = true;
+                rightDot1.GetComponent<Dot>().Matched = true;
+                Matched = true;
+            }
+        }
+        if (row > 0 && row < board.height - 1)
+        {
+            GameObject upDot1 = board.allDots[column, row + 1];
+            GameObject downDot1 = board.allDots[column, row - 1];
+            //add tag to each dot means that each dot in the prefab has each own unique name, such like it
+            if (upDot1.tag == this.gameObject.tag && downDot1.tag == this.gameObject.tag)
+            {
+                upDot1.GetComponent<Dot>().Matched = true;
+                downDot1.GetComponent<Dot>().Matched = true;
+                Matched = true;
+            }
         }
     }
 }
