@@ -5,11 +5,15 @@ using UnityEngine;
 
 public class Dot : MonoBehaviour
 {
+    [Header("Board Variables")]
     public int column;
     public int row;
+    public int prevousColumn;
+    public int prevousRow;
     public int targetX;
     public int targetY;
     public bool Matched = false;
+
     private GameObject otherDot;
     private Board board;
     private Vector2 firstTouchPosition;
@@ -24,6 +28,8 @@ public class Dot : MonoBehaviour
         targetY = (int)transform.position.y;
         row = targetY;
         column = targetX;
+        prevousColumn = column;
+        prevousRow = row;
     }
 
     // Update is called once per frame
@@ -65,6 +71,21 @@ public class Dot : MonoBehaviour
         }
 
     }
+    public IEnumerator CheckMoveCo()
+    {
+        yield return new WaitForSeconds(.5f);
+        if(otherDot != null)        //why we have to check whether it is null or not
+        {
+            if(!Matched && !otherDot.GetComponent<Dot>().Matched)
+            {
+                otherDot.GetComponent<Dot>().column = column;
+                otherDot.GetComponent<Dot>().row = row;
+                row = prevousRow;
+                column = prevousColumn;
+            }
+            otherDot = null;
+        }
+    }
     private void OnMouseDown()
     {
         firstTouchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -82,7 +103,7 @@ public class Dot : MonoBehaviour
     }
     void MovePieces()
     {
-        if(swipeAngle > -45 && swipeAngle <= 45 && column < board.width)
+        if(swipeAngle > -45 && swipeAngle <= 45 && column < board.width - 1)
         {
             //Right swipe
             otherDot = board.allDots[column + 1, row];//this line is to take the other dot
@@ -90,7 +111,7 @@ public class Dot : MonoBehaviour
             column += 1;//this line is to change the column of the current dot
 
         }
-        else if (swipeAngle > 45 && swipeAngle <= 135 && row < board.height)
+        else if (swipeAngle > 45 && swipeAngle <= 135 && row < board.height - 1)
         {
             //Upper swipe
             otherDot = board.allDots[column, row + 1];
@@ -114,6 +135,7 @@ public class Dot : MonoBehaviour
             row -= 1;
 
         }
+        StartCoroutine(CheckMoveCo());
     }
     void FindMatches()
     {
