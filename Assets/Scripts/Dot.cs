@@ -84,8 +84,13 @@ public class Dot : MonoBehaviour
                 row = prevousRow;
                 column = prevousColumn;
             }
+            else
+            {
+                board.DestroyMatches();
+            }
             otherDot = null;        //we want to set the null value to null since it can affect other swipe later
         }
+        
     }
     private void OnMouseDown()
     {

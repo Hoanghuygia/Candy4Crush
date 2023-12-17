@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using UnityEngine;
 
 public class Board : MonoBehaviour{
@@ -70,4 +71,25 @@ public class Board : MonoBehaviour{
     //    }
     //    return false;
     //}
+    private void DestroyMatchesAt(int column, int row)
+    {
+        if (allDots[column, row].GetComponent<Dot>().Matched)       //if we want to change/access properties of other class, must use GetComponent()
+        {
+            Destroy(allDots[column, row]);
+            allDots[column, row] = null;
+        }
+    }
+    public void DestroyMatches()
+    {
+        for(int i = 0; i < width; i++)
+        {
+            for(int j = 0; j < height; j++)
+            {
+                if (allDots[i, j] != null)
+                {
+                    DestroyMatchesAt(i, j);
+                }
+            }
+        }
+    }
 }
