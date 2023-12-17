@@ -75,7 +75,7 @@ public class Board : MonoBehaviour{
     {
         if (allDots[column, row].GetComponent<Dot>().Matched)       //if we want to change/access properties of other class, must use GetComponent()
         {
-            Destroy(allDots[column, row]);
+            Destroy(allDots[column, row]);          //this code is to destroy the game object 
             allDots[column, row] = null;
         }
     }
@@ -104,10 +104,45 @@ public class Board : MonoBehaviour{
                     allDots[i, j].GetComponent<Dot>().row -= nullCount;     //this means that it would iterate to change the location 
                     //of the row of the current pieces to bottom (move down) untill it meet the highest row
                     allDots[i, j] = null;
-                }
+                }//why we do not build an else statement here to create pieces if it come to max j
             }
             nullCount = 0;
         }
         yield return new WaitForSeconds(.4f);
+        StartCoroutine(FillBoardCo());
+    }
+    private void ReffillBoard() {
+        for(int i = 0; i < width; i++) {
+            for(int j = 0; j < height; j++) {
+                if (allDots[i, j] == null) {
+                    Vector2 tempPosition = new Vector2(i, j);
+                    int dotToUse = Random.Range(0, dots.Length);
+                    GameObject pieces = Instantiate(dots[dotToUse], tempPosition, Quaternion.identity);
+                    allDots[i, j] = pieces;
+                }
+            }
+        }
+    }
+    private bool MatchesOnBoard() {         //this function is to create continuity matches when create new pieces
+        for(int i = 0; i < width; i++) {
+            for(int j = 0; j < height; j++) {       //maybe we need to check null pieces here
+                if (allDots[i, j] != null) {
+                    if (allDots[i, j].GetComponent<Dot>().Matched) {//a little changes heres
+                        return true;
+                    }
+                }
+                
+            }
+        }
+        return false;
+    }
+    private IEnumerator FillBoardCo() {
+        ReffillBoard();
+        yield return new WaitForSeconds(.5f);
+
+        while (MatchesOnBoard()) {
+            yield return new WaitForSeconds(.5f);
+            DestroyMatches();
+        }
     }
 }

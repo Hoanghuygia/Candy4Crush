@@ -37,11 +37,10 @@ public class Dot : MonoBehaviour
     void Update()
     {
         FindMatches();
-        //if (Matched)
-        //{
-        //    SpriteRenderer mySprite = GetComponent<SpriteRenderer>();
-        //    mySprite.color = new Color(1f, 1f, 1f, .2f);
-        //}
+        if (Matched) {
+            SpriteRenderer mySprite = GetComponent<SpriteRenderer>();
+            mySprite.color = new Color(1f, 1f, 1f, .2f);
+        }
         targetX = column;
         targetY = row;
         if (Mathf.Abs(targetX - transform.position.x) > .1)
