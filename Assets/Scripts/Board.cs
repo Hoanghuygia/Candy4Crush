@@ -88,7 +88,8 @@ public class Board : MonoBehaviour{
         if (allDots[column, row].GetComponent<Dot>().Matched)       //if we want to change/access properties of other class, must use GetComponent()
         {
             findMatches.currentMatches.Remove(allDots[column, row]);     //each time we destroy the matches, also remove from the list
-            Instantiate(destroyEffect, allDots[column, row].transform.position, Quaternion.identity);
+            GameObject particle = Instantiate(destroyEffect, allDots[column, row].transform.position, Quaternion.identity);
+            Destroy(particle, .5f); 
             Destroy(allDots[column, row]);          //this code is to destroy the game object 
             allDots[column, row] = null;
         }
