@@ -20,11 +20,22 @@ public class Dot : MonoBehaviour
     private Vector2 firstTouchPosition;
     private Vector2 finalTouchPosition;
     private Vector2 tempPosition;
+
+    [Header ("Swipe stuff")]
     public float swipeAngle = 0;
     public float swipeResist = 1f;
+
+    [Header("Power Up")]
+    public bool ColumnBomb;
+    public bool RowBomb;
+    public GameObject rowArrow;
+    public GameObject columnArrow;
+
     // Start is called before the first frame update
     void Start()
     {
+        ColumnBomb = false;
+        RowBomb = false;
         board = FindObjectOfType<Board>();
         findMatches = FindObjectOfType<FindMatches>();
         //targetX = (int)transform.position.x;
@@ -36,6 +47,15 @@ public class Dot : MonoBehaviour
     }
 
     // Update is called once per frame
+
+    //This is for testing and debug only.
+    private void OnMouseOver() {
+        if (Input.GetMouseButtonDown(1)) {
+            ColumnBomb = true;
+            GameObject arrow = Instantiate(columnArrow, transform.position, Quaternion.identity);
+            arrow.transform.parent = this.transform;
+        }
+    }
     void Update()
     {
         //FindMatches();
