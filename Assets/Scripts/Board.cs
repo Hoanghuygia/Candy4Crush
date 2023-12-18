@@ -17,8 +17,10 @@ public class Board : MonoBehaviour{
     public GameObject[] dots;
     private BackgroundTile[,] allTiles;
     public GameObject[,] allDots;
+    private FindMatches findMatches;
 
     void Start(){
+        findMatches = FindObjectOfType<FindMatches>();
         allTiles = new BackgroundTile[width, height];
         allDots = new GameObject[width, height];
         SetUp();
@@ -84,6 +86,7 @@ public class Board : MonoBehaviour{
     {
         if (allDots[column, row].GetComponent<Dot>().Matched)       //if we want to change/access properties of other class, must use GetComponent()
         {
+            findMatches.currentMatches.Remove(allDots[column, row]);     //each time we destroy the matches, also remove from the list
             Destroy(allDots[column, row]);          //this code is to destroy the game object 
             allDots[column, row] = null;
         }
