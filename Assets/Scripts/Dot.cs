@@ -15,6 +15,7 @@ public class Dot : MonoBehaviour
     public bool Matched = false;
 
     private GameObject otherDot;
+    private FindMatches findMatches;
     private Board board;
     private Vector2 firstTouchPosition;
     private Vector2 finalTouchPosition;
@@ -25,6 +26,7 @@ public class Dot : MonoBehaviour
     void Start()
     {
         board = FindObjectOfType<Board>();
+        findMatches = FindObjectOfType<FindMatches>();
         //targetX = (int)transform.position.x;
         //targetY = (int)transform.position.y;
         //row = targetY;
@@ -36,7 +38,7 @@ public class Dot : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        FindMatches();
+        //FindMatches();
         if (Matched) {
             SpriteRenderer mySprite = GetComponent<SpriteRenderer>();
             mySprite.color = new Color(1f, 1f, 1f, .2f);
@@ -51,6 +53,7 @@ public class Dot : MonoBehaviour
             if (board.allDots[column, row] != this.gameObject) {
                 board.allDots[column, row] = this.gameObject;
             }
+            findMatches.FindAllMatches();
         }
         else
         {
@@ -67,6 +70,8 @@ public class Dot : MonoBehaviour
             if (board.allDots[column, row] != this.gameObject) {
                 board.allDots[column, row] = this.gameObject;
             }
+            findMatches.FindAllMatches();
+
         }
         else
         {
@@ -169,7 +174,7 @@ public class Dot : MonoBehaviour
         }
         StartCoroutine(CheckMoveCo());
     }
-    void FindMatches()
+    void FindMatches()          //why we do not need to loop for each of the pieces, that is because the dot class always run each loop in board class
     {
         if(column > 0 && column < board.width - 1)
         {
