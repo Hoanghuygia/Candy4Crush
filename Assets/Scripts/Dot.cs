@@ -15,6 +15,7 @@ public class Dot : MonoBehaviour
     public bool Matched = false;
 
     private GameObject otherDot;
+    private FindMatches findMatches;
     private Board board;
     private Vector2 firstTouchPosition;
     private Vector2 finalTouchPosition;
@@ -25,6 +26,7 @@ public class Dot : MonoBehaviour
     void Start()
     {
         board = FindObjectOfType<Board>();
+        findMatches = FindObjectOfType<FindMatches>();
         //targetX = (int)transform.position.x;
         //targetY = (int)transform.position.y;
         //row = targetY;
@@ -36,7 +38,7 @@ public class Dot : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        FindMatches();
+        //FindMatches();
         if (Matched) {
             SpriteRenderer mySprite = GetComponent<SpriteRenderer>();
             mySprite.color = new Color(1f, 1f, 1f, .2f);
@@ -51,6 +53,7 @@ public class Dot : MonoBehaviour
             if (board.allDots[column, row] != this.gameObject) {
                 board.allDots[column, row] = this.gameObject;
             }
+            findMatches.FindAllMatches();
         }
         else
         {
@@ -67,6 +70,8 @@ public class Dot : MonoBehaviour
             if (board.allDots[column, row] != this.gameObject) {
                 board.allDots[column, row] = this.gameObject;
             }
+            findMatches.FindAllMatches();
+
         }
         else
         {
@@ -87,32 +92,40 @@ public class Dot : MonoBehaviour
                 otherDot.GetComponent<Dot>().row = row;
                 row = prevousRow;
                 column = prevousColumn;
+                yield return new WaitForSeconds(.5f);
+                board.currentState = GameState.move;
             }
             else
             {
                 board.DestroyMatches();
+                
             }
             otherDot = null;        //we want to set the null value to null since it can affect other swipe later
         }
         
     }
-    private void OnMouseDown()
-    {
-        firstTouchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+    private void OnMouseDown(){
+        if(board.currentState == GameState.move) {
+            firstTouchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        }
     }
-    private void OnMouseUp()
-    {
-        finalTouchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        CalculateAngle();
-
+    private void OnMouseUp(){
+        if(board.currentState == GameState.move) {
+            finalTouchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            CalculateAngle();
+        }
     }
     void CalculateAngle()       //fix bug that it automatically move pieces when touching
     {
         if(Mathf.Abs(finalTouchPosition.y - firstTouchPosition.y) > swipeResist ||
-            Mathf.Abs(finalTouchPosition.x - firstTouchPosition.x) > swipeResist)
-        {
+            Mathf.Abs(finalTouchPosition.x - firstTouchPosition.x) > swipeResist){
+
             swipeAngle = Mathf.Atan2(finalTouchPosition.y - firstTouchPosition.y, finalTouchPosition.x - firstTouchPosition.x) * 180 / Mathf.PI;
             MovePieces();
+            board.currentState = GameState.wait;
+        }
+        else {
+            board.currentState = GameState.move;
         }
         
 
@@ -123,7 +136,7 @@ public class Dot : MonoBehaviour
         {
             //Right swipe
             otherDot = board.allDots[column + 1, row];//this line is to take the other dot
-            prevousColumn = column;
+            prevousColumn = column;             //save the prevous location here instead of 
             prevousRow = row;
             otherDot.GetComponent<Dot>().column -= 1;//this line is to change the position of the other dot
             column += 1;//this line is to change the column of the current dot
@@ -161,7 +174,7 @@ public class Dot : MonoBehaviour
         }
         StartCoroutine(CheckMoveCo());
     }
-    void FindMatches()
+    void FindMatches()          //why we do not need to loop for each of the pieces, that is because the dot class always run each loop in board class
     {
         if(column > 0 && column < board.width - 1)
         {

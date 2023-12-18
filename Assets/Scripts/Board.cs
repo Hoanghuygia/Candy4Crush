@@ -3,8 +3,13 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using UnityEngine;
 
+public enum GameState {
+    wait,
+    move
+}
 public class Board : MonoBehaviour{
 
+    public GameState currentState = GameState.move;
     public int width;
     public int height;
     public int offSet;
@@ -23,7 +28,7 @@ public class Board : MonoBehaviour{
         for (int i = 0; i < width; i++){
             for (int j = 0; j < height; j++){
                 Vector2 temptPosition = new Vector2(i, j + offSet);
-                GameObject backgroundTile = Instantiate(tilePrefab, temptPosition, Quaternion.identity) as GameObject;
+                GameObject backgroundTile = Instantiate(tilePrefab, temptPosition, Quaternion.identity) as GameObject; 
                 backgroundTile.transform.parent = this.transform;
                 backgroundTile.name = "( " + i + ", " + j + " )";
 
@@ -37,7 +42,7 @@ public class Board : MonoBehaviour{
                 maxInteration = 0;
                 GameObject dot = Instantiate(dots[dotToUse], temptPosition, Quaternion.identity);
 
-                dot.GetComponent<Dot>().row = j;
+                dot.GetComponent<Dot>().row = j;                              //make the slicing transition
                 dot.GetComponent<Dot>().column = i;
                 dot.transform.parent = this.transform;
                 dot.name = "( " + i + ", " + j + " )";
@@ -150,5 +155,7 @@ public class Board : MonoBehaviour{
             yield return new WaitForSeconds(.5f);
             DestroyMatches();
         }
+        yield return new WaitForSeconds(.5f);
+        currentState = GameState.move;
     }
 }
