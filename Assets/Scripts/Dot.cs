@@ -14,7 +14,7 @@ public class Dot : MonoBehaviour
     public int targetY;
     public bool Matched = false;
 
-    private GameObject otherDot;
+    public GameObject otherDot;
     private FindMatches findMatches;
     private Board board;
     private Vector2 firstTouchPosition;
@@ -59,10 +59,10 @@ public class Dot : MonoBehaviour
     void Update()
     {
         //FindMatches();
-        if (Matched) {
-            SpriteRenderer mySprite = GetComponent<SpriteRenderer>();
-            mySprite.color = new Color(1f, 1f, 1f, .2f);
-        }
+        //if (Matched) {
+        //    SpriteRenderer mySprite = GetComponent<SpriteRenderer>();
+        //    mySprite.color = new Color(1f, 1f, 1f, .2f);
+        //}
         targetX = column;
         targetY = row;
         if (Mathf.Abs(targetX - transform.position.x) > .1)
@@ -101,7 +101,7 @@ public class Dot : MonoBehaviour
         }
 
     }
-    public IEnumerator CheckMoveCo()
+    public IEnumerator CheckMoveCo()            //this function is to make the pieces back the prevous place
     {
         yield return new WaitForSeconds(.5f);
         if(otherDot != null)        //why we have to check whether it is null or not
@@ -113,6 +113,7 @@ public class Dot : MonoBehaviour
                 row = prevousRow;
                 column = prevousColumn;
                 yield return new WaitForSeconds(.5f);
+                board.currentDot = null;
                 board.currentState = GameState.move;
             }
             else
@@ -143,6 +144,8 @@ public class Dot : MonoBehaviour
             swipeAngle = Mathf.Atan2(finalTouchPosition.y - firstTouchPosition.y, finalTouchPosition.x - firstTouchPosition.x) * 180 / Mathf.PI;
             MovePieces();
             board.currentState = GameState.wait;
+            board.currentDot = this;            //keep track the current dot - the dot that is clicked
+
         }
         else {
             board.currentState = GameState.move;
@@ -228,5 +231,15 @@ public class Dot : MonoBehaviour
             //add tag to each dot means that each dot in the prefab has each own unique name, such like it
             
         }
+    }
+    public void MakeRowBomb() {
+        RowBomb = true;
+        GameObject arrow = Instantiate(rowArrow, transform.position, Quaternion.identity);
+        arrow.transform.parent = this.transform;
+    }
+    public void MakeColumnBomb() {
+        ColumnBomb = true;
+        GameObject arrow = Instantiate(columnArrow, transform.position, Quaternion.identity);
+        arrow.transform.parent = this.transform;
     }
 }

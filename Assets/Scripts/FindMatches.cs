@@ -115,5 +115,26 @@ public class FindMatches : MonoBehaviour
         }
         return dots;
     }
+    public void CheckBombs() {
+        //did the player move something?
+        if (board.currentDot != null)
+        {//is the piece they move matched?
+            if (board.currentDot.Matched) {         //there are two case that we swipe a true match, swipe this match or click the other dot
+
+                board.currentDot.Matched = false;//we set it to unmatched since we want it to stay and decide what kind of bomb it is
+                int typeOfBomb = Random.Range(0, 100);
+                if(typeOfBomb > 50) {
+                    board.currentDot.MakeColumnBomb();
+                }
+                else {
+                    //make row bomb
+                    board.currentDot.MakeRowBomb();
+                }
+            }
+            else if(board.currentDot.otherDot != null) {
+
+            }
+        }
+    }
 
 }
