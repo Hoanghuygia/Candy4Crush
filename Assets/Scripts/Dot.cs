@@ -29,15 +29,19 @@ public class Dot : MonoBehaviour
     public bool ColumnBomb;
     public bool RowBomb;
     public bool ColorBomb;
+    public bool AdjacentBomb;
     public GameObject rowArrow;
     public GameObject columnArrow;
     public GameObject colorBomb;
+    public GameObject adjacentMarker;
 
     // Start is called before the first frame update
     void Start()
     {
         ColumnBomb = false;
         RowBomb = false;
+        ColorBomb = false;
+        AdjacentBomb = false;
         board = FindObjectOfType<Board>();
         findMatches = FindObjectOfType<FindMatches>();
         //targetX = (int)transform.position.x;
@@ -53,9 +57,9 @@ public class Dot : MonoBehaviour
     //This is for testing and debug only.
     private void OnMouseOver() {
         if (Input.GetMouseButtonDown(1)) {
-            ColorBomb = true;
-            GameObject color = Instantiate(colorBomb, transform.position, Quaternion.identity);
-            color.transform.parent = this.transform;
+            AdjacentBomb = true;
+            GameObject marker = Instantiate(adjacentMarker, transform.position, Quaternion.identity);
+            marker.transform.parent = this.transform;
         }
     }
     void Update()
