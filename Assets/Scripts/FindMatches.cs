@@ -32,7 +32,16 @@ public class FindMatches : MonoBehaviour
                                     || rightDot.GetComponent<Dot>().RowBomb) {
                                     currentMatches.Union(GetRowPieces(j));
                                 }
-                                if(!currentMatches.Contains(leftDot) ) {
+                                if (currentDot.GetComponent<Dot>().ColumnBomb) {
+                                    currentMatches.Union(GetColumnPieces(i));
+                                }
+                                if (leftDot.GetComponent<Dot>().ColumnBomb) {
+                                    currentMatches.Union(GetColumnPieces(i - 1));
+                                }
+                                if (rightDot.GetComponent<Dot>().ColumnBomb) {
+                                    currentMatches.Union(GetColumnPieces(i + 1));
+                                }
+                                if (!currentMatches.Contains(leftDot) ) {
                                     currentMatches.Add(leftDot);
                                 }
                                 leftDot.GetComponent<Dot>().Matched = true;
@@ -52,6 +61,21 @@ public class FindMatches : MonoBehaviour
                         GameObject downDot = board.allDots[i, j - 1];
                         if (upDot != null && downDot != null) {
                             if (upDot.tag == currentDot.tag && downDot.tag == currentDot.tag) {
+
+                                if (currentDot.GetComponent<Dot>().ColumnBomb
+                                    || upDot.GetComponent<Dot>().ColumnBomb
+                                    || downDot.GetComponent<Dot>().ColumnBomb) {
+                                    currentMatches.Union(GetColumnPieces(i));
+                                }
+                                if (currentDot.GetComponent<Dot>().RowBomb) {
+                                    currentMatches.Union(GetRowPieces(j));
+                                }
+                                if (upDot.GetComponent<Dot>().RowBomb) {
+                                    currentMatches.Union(GetRowPieces(j + 1));
+                                }
+                                if (downDot.GetComponent<Dot>().RowBomb) {
+                                    currentMatches.Union(GetRowPieces(j - 1));
+                                }
                                 if (!currentMatches.Contains(upDot)) {
                                     currentMatches.Add(upDot);
                                 }
