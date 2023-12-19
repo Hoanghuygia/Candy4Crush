@@ -146,6 +146,8 @@ MonoBehaviour:
   ColumnBomb: 0
   RowBomb: 0
   ColorBomb: 0
+  AdjacentBomb: 0
   rowArrow: {fileID: 787827221517842549, guid: 8ddf250059b63154f94297bfe2caf579, type: 3}
   columnArrow: {fileID: 225380883814858830, guid: df2e1b487dfaf43438bdf6f3b48d6938, type: 3}
   colorBomb: {fileID: 8893692445103782561, guid: 8f16a66f94b949845be1655413addba6, type: 3}
+  adjacentMarker: {fileID: 4092162217933339483, guid: 17e6bfdd7027c834d868d67a1ccbac87, type: 3}
