@@ -28,8 +28,10 @@ public class Dot : MonoBehaviour
     [Header("Power Up")]
     public bool ColumnBomb;
     public bool RowBomb;
+    public bool ColorBomb;
     public GameObject rowArrow;
     public GameObject columnArrow;
+    public GameObject colorBomb;
 
     // Start is called before the first frame update
     void Start()
@@ -51,9 +53,9 @@ public class Dot : MonoBehaviour
     //This is for testing and debug only.
     private void OnMouseOver() {
         if (Input.GetMouseButtonDown(1)) {
-            RowBomb = true;
-            GameObject arrow = Instantiate(rowArrow, transform.position, Quaternion.identity);
-            arrow.transform.parent = this.transform;
+            ColorBomb = true;
+            GameObject color = Instantiate(colorBomb, transform.position, Quaternion.identity);
+            color.transform.parent = this.transform;
         }
     }
     void Update()
@@ -101,11 +103,21 @@ public class Dot : MonoBehaviour
         }
 
     }
-    public IEnumerator CheckMoveCo()            //this function is to make the pieces back the prevous place
+    public IEnumerator CheckMoveCo()            //this function is to make the pieces back the prevous place or destroy 
     {
         yield return new WaitForSeconds(.5f);
         if(otherDot != null)        //why we have to check whether it is null or not
         {
+            if (ColorBomb) {
+                findMatches.MatchPiecesOfColor(otherDot.tag);//it means that it would destroy the color when two pieces has the same color
+                //this piece is a color bomb and the other piece is the color to destroy
+                Matched = true;
+            }
+            else if (otherDot.GetComponent<Dot>().ColorBomb) {
+                //the other dot is the color bomb
+                findMatches.MatchPiecesOfColor(this.gameObject.tag);
+                otherDot.GetComponent<Dot>().Matched = true;
+            }
             if(!Matched && !otherDot.GetComponent<Dot>().Matched)
             {
                 otherDot.GetComponent<Dot>().column = column;

@@ -95,6 +95,17 @@ public class FindMatches : MonoBehaviour
             }
         }
     }
+    public void MatchPiecesOfColor(string color) {
+        for(int i = 0; i < board.width; i++) {
+            for(int j = 0; j < board.height; j++) {
+                if (board.allDots[i, j] != null) {
+                    if (board.allDots[i, j].tag == color) {
+                        board.allDots[i, j].GetComponent<Dot>().Matched = true;//since this is only a GameObject, so we have to access to its script
+                    }
+                }
+            }
+        }
+    }
     List<GameObject> GetColumnPieces(int column) {
         List<GameObject> dots = new List<GameObject>();
         for(int i = 0; i< board.height; i++) {
