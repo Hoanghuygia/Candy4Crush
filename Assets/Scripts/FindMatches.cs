@@ -132,7 +132,20 @@ public class FindMatches : MonoBehaviour
                 }
             }
             else if(board.currentDot.otherDot != null) {
-
+                Dot otherDot = board.currentDot.otherDot.GetComponent<Dot>();
+                //Dot otherDot = board.currentDot.GetComponent<Dot>().otherDot.GetComponent<Dot>();//the way he uses
+                if (otherDot.Matched) {
+                    otherDot.Matched = false;
+                    int typeOfBomb = Random.Range(0, 100);
+                    if (typeOfBomb > 50) {
+                        //make colum bomb
+                        otherDot.MakeColumnBomb();
+                    }
+                    else {
+                        //make row bomb
+                        otherDot.MakeRowBomb();
+                    }
+                }
             }
         }
     }
