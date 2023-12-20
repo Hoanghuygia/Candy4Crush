@@ -86,7 +86,7 @@ public class Board : MonoBehaviour{
 
                 if (allDots[column - 1, row].tag == piece.tag && allDots[column - 2, row].tag == piece.tag) return true;
             }
-            if (allDots[column, row - 1] != null && allDots[column, row - 1] != null) {
+            if (allDots[column, row - 1] != null && allDots[column, row - 2] != null) {
 
                 if (allDots[column, row - 1].tag == piece.tag && allDots[column, row - 2].tag == piece.tag) return true;
             }
@@ -218,7 +218,24 @@ public class Board : MonoBehaviour{
                 }
             }
         }
-        StartCoroutine(DecreaseRowCo());
+        StartCoroutine(DecreaseRowCo2());
+    }
+    private IEnumerator DecreaseRowCo2() {
+        for(int i = 0; i< width; i++) {
+            for(int j = 0; j < height; j++) {
+                if (!blankSpaces[i, j] && allDots[i, j] == null) {
+                    for(int k = j + 1; k < height; k++) {
+                        if (allDots[i, k] != null) {
+                            allDots[i, k].GetComponent<Dot>().row = j;
+                            allDots[i, k] = null;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        yield return new WaitForSeconds(.4f);
+        StartCoroutine(FillBoardCo());
     }
     private IEnumerator DecreaseRowCo() {
         int nullCount = 0;
@@ -241,7 +258,7 @@ public class Board : MonoBehaviour{
     private void ReffillBoard() {
         for(int i = 0; i < width; i++) {
             for(int j = 0; j < height; j++) {
-                if (allDots[i, j] == null) {
+                if (allDots[i, j] == null && !blankSpaces[i, j]) {// && !blankSpaces[i, j]
                     Vector2 tempPosition = new Vector2(i, j + offSet);
                     int dotToUse = Random.Range(0, dots.Length);
                     GameObject piece = Instantiate(dots[dotToUse], tempPosition, Quaternion.identity);
