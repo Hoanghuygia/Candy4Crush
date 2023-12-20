@@ -84,22 +84,23 @@ public class Board : MonoBehaviour{
     //    }
     //    return false;
     //}
-    private bool ColumnOrRow() {
+    private bool ColumnOrRow() {//this function is to check if this belong to two kind of five match (vertical or horizontial) => true
         int numberHorizotial = 0;
-        int numberVertotial = 0;
+        int numberVertical = 0;
         Dot firstPiece = findMatches.currentMatches[0].GetComponent<Dot>();
-        if (firstPiece == null) {
+        if (firstPiece != null) {
             foreach(GameObject currentPiece in findMatches.currentMatches) {
                 Dot dot = currentPiece.GetComponent<Dot>();
                 if(dot.row == firstPiece.row) {
                     numberHorizotial++;
                 }
                 if(dot.column == firstPiece.column) {
-                    numberVertotial++;
+                    numberVertical++;
                 }
             }
         }
-        return (numberVertotial == 5 || numberHorizotial == 5);
+        Debug.Log("Column: " + numberHorizotial + "  Row: " + numberVertical);
+        return (numberVertical == 5 || numberHorizotial == 5);
     }
     private void CheckToMakeBomb() {
         if(findMatches.currentMatches.Count == 4 || findMatches.currentMatches.Count == 7) {
@@ -140,7 +141,7 @@ public class Board : MonoBehaviour{
                             currentDot.MakeAdjacentBomb();
                         }
                     }
-                    else {//i dont know this case
+                    else {//for the case that we use the other dot to match
                         if (currentDot.otherDot != null) {
                             Dot otherDot = currentDot.otherDot.GetComponent<Dot>();
                             if (otherDot.Matched) {
