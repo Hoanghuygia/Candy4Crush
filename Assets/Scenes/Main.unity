@@ -167,6 +167,25 @@ MonoBehaviour:
   - {fileID: 2752850887699840374, guid: 0c801a6e1bbb12f40888b0289672fe59, type: 3}
   - {fileID: 8375765422112767573, guid: 7c555cf029a95654d8d2d5d77f195b85, type: 3}
   destroyEffect: {fileID: 307754034106730797, guid: daaf7a1625cc20341a7003e665eb8937, type: 3}
+  boardLayout:
+  - x: 0
+    y: 0
+    tileKind: 1
+  - x: 6
+    y: 9
+    tileKind: 1
+  - x: 6
+    y: 0
+    tileKind: 1
+  - x: 0
+    y: 9
+    tileKind: 1
+  - x: 4
+    y: 4
+    tileKind: 1
+  - x: 5
+    y: 4
+    tileKind: 1
   currentDot: {fileID: 0}
 --- !u!4 &392352549
 Transform:
