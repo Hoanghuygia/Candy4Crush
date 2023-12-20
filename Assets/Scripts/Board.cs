@@ -84,12 +84,84 @@ public class Board : MonoBehaviour{
     //    }
     //    return false;
     //}
+    private bool ColumnOrRow() {//this function is to check if this belong to two kind of five match (vertical or horizontial) => true
+        int numberHorizotial = 0;
+        int numberVertical = 0;
+        Dot firstPiece = findMatches.currentMatches[0].GetComponent<Dot>();
+        if (firstPiece != null) {
+            foreach(GameObject currentPiece in findMatches.currentMatches) {
+                Dot dot = currentPiece.GetComponent<Dot>();
+                if(dot.row == firstPiece.row) {
+                    numberHorizotial++;
+                }
+                if(dot.column == firstPiece.column) {
+                    numberVertical++;
+                }
+            }
+        }
+        Debug.Log("Column: " + numberHorizotial + "  Row: " + numberVertical);
+        return (numberVertical == 5 || numberHorizotial == 5);
+    }
+    private void CheckToMakeBomb() {
+        if(findMatches.currentMatches.Count == 4 || findMatches.currentMatches.Count == 7) {
+            findMatches.CheckBombs();//destroy all the row/column
+        }
+        if(findMatches.currentMatches.Count == 5 || findMatches.currentMatches.Count == 8) {
+            if (ColumnOrRow()) {
+                //make a color bomb
+                Debug.Log("Make a color bomb");
+                //is the current dot matched
+                if(currentDot != null) {
+                    if (currentDot.Matched) {
+                        if (!currentDot.ColorBomb) {
+                            currentDot.Matched = false;
+                            currentDot.MakeColorBomb();
+                        }
+                    }
+                    else {//i dont know this case
+                        if(currentDot.otherDot != null) {
+                            Dot otherDot = currentDot.otherDot.GetComponent<Dot>();
+                            if (otherDot.Matched) {
+                                if(!otherDot.ColorBomb) {
+                                    otherDot.Matched = false;
+                                    otherDot.MakeColorBomb();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            else {
+                //make a adjacent bomb
+                Debug.Log("Make a adjacent bomb");
+                if (currentDot != null) {
+                    if (currentDot.Matched) {
+                        if (!currentDot.AdjacentBomb) {
+                            currentDot.Matched = false;
+                            currentDot.MakeAdjacentBomb();
+                        }
+                    }
+                    else {//for the case that we use the other dot to match
+                        if (currentDot.otherDot != null) {
+                            Dot otherDot = currentDot.otherDot.GetComponent<Dot>();
+                            if (otherDot.Matched) {
+                                if (!otherDot.AdjacentBomb) {
+                                    otherDot.Matched = false;
+                                    otherDot.MakeAdjacentBomb();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
     private void DestroyMatchesAt(int column, int row)
     {
         if (allDots[column, row].GetComponent<Dot>().Matched)       //if we want to change/access properties of other class, must use GetComponent()
         {
-            if(findMatches.currentMatches.Count == 4 || findMatches.currentMatches.Count == 7) {//why we need to check 7 dots
-                findMatches.CheckBombs();
+            if(findMatches.currentMatches.Count >= 4) {//why we need to check 7 dots
+                CheckToMakeBomb();
             }
             findMatches.currentMatches.Remove(allDots[column, row]);     //each time we destroy the matches, also remove from the list
             GameObject particle = Instantiate(destroyEffect, allDots[column, row].transform.position, Quaternion.identity);
