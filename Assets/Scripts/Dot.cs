@@ -165,14 +165,21 @@ public class Dot : MonoBehaviour
 
     }
     private void MovePieceactual(Vector2 direction) {
+
         otherDot = board.allDots[column + (int)direction.x, row + (int)direction.y];//this line is to take the other dot
         prevousColumn = column;             //save the prevous location here instead of 
         prevousRow = row;
-        otherDot.GetComponent<Dot>().column += -1 * (int)direction.x;
-        otherDot.GetComponent<Dot>().row += -1 * (int)direction.y;
-        column += (int)direction.x;
-        row += (int)direction.y;
-        StartCoroutine(CheckMoveCo());
+        if(otherDot != null) {
+            otherDot.GetComponent<Dot>().column += -1 * (int)direction.x;
+            otherDot.GetComponent<Dot>().row += -1 * (int)direction.y;
+            column += (int)direction.x;
+            row += (int)direction.y;
+            StartCoroutine(CheckMoveCo());
+        }
+        else {
+            board.currentState = GameState.move;
+        }
+        
     }
     void MovePieces()
     {
