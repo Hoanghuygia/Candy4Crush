@@ -157,6 +157,7 @@ MonoBehaviour:
   height: 10
   offSet: 20
   tilePrefab: {fileID: 4794523875102041569, guid: 4f5b4d3e4e61af84e89a7377e4621e01, type: 3}
+  breakableTilePrefab: {fileID: 2461153449465637356, guid: 9d4ca842fd5d3aa439996a0d05930d18, type: 3}
   dots:
   - {fileID: 5646763335313592624, guid: d2f5dcf361701274b95b28a881c848fd, type: 3}
   - {fileID: 3961846642319933406, guid: c47dd6a8da8c1f24f86e3408e97df306, type: 3}
@@ -170,7 +171,7 @@ MonoBehaviour:
   boardLayout:
   - x: 0
     y: 0
-    tileKind: 1
+    tileKind: 0
   - x: 6
     y: 9
     tileKind: 1
