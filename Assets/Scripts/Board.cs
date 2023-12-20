@@ -7,6 +7,17 @@ public enum GameState {
     wait,
     move
 }
+public enum TileKind {
+    Breakable,
+    Blank,
+    Normal
+}
+[System.Serializable]   //this help unity to known the below should serilize
+public class TypeTile {
+    public int x;
+    public int y;
+    public TileKind tileKind;
+}
 public class Board : MonoBehaviour{
 
     public GameState currentState = GameState.move;
@@ -16,60 +27,85 @@ public class Board : MonoBehaviour{
     public GameObject tilePrefab;
     public GameObject[] dots;
     public GameObject destroyEffect;
-    private BackgroundTile[,] allTiles;
+    public TypeTile[] boardLayout;  //make public so it can be seen it the inspector
+    private bool[,] blankSpaces;
     public GameObject[,] allDots;
     public Dot currentDot;
     private FindMatches findMatches;
 
     void Start(){
         findMatches = FindObjectOfType<FindMatches>();
-        allTiles = new BackgroundTile[width, height];
+        blankSpaces = new bool[width, height];
         allDots = new GameObject[width, height];
         SetUp();
     }
+    public void GenerateBlankSpaces() {
+        for(int i = 0; i< boardLayout.Length; i++) {
+            if (boardLayout[i].tileKind == TileKind.Blank) {
+                blankSpaces[boardLayout[i].x, boardLayout[i].y] = true;
+            }
+        }
+    }
     private void SetUp()
     {
+        GenerateBlankSpaces();
         for (int i = 0; i < width; i++){
-            for (int j = 0; j < height; j++){
-                Vector2 temptPosition = new Vector2(i, j + offSet);
-                GameObject backgroundTile = Instantiate(tilePrefab, temptPosition, Quaternion.identity) as GameObject; 
-                backgroundTile.transform.parent = this.transform;
-                backgroundTile.name = "( " + i + ", " + j + " )";
+            for (int j = 0; j < height; j++) {
+                if (!blankSpaces[i, j]) {
+                    Vector2 temptPosition = new Vector2(i, j + offSet);
+                    GameObject backgroundTile = Instantiate(tilePrefab, temptPosition, Quaternion.identity) as GameObject;
+                    backgroundTile.transform.parent = this.transform;
+                    backgroundTile.name = "( " + i + ", " + j + " )";
 
-                int dotToUse = Random.Range(0, dots.Length);
-                int maxInteration = 0;
-                while(MatchesAt(i, j, dots[dotToUse]) && maxInteration < 100) //why we need maxInteration ?
-                {
-                    dotToUse = Random.Range(0, dots.Length);
-                    maxInteration++;
+                    int dotToUse = Random.Range(0, dots.Length);
+                    int maxInteration = 0;
+                    while (MatchesAt(i, j, dots[dotToUse]) && maxInteration < 100) //why we need maxInteration ?
+                    {
+                        dotToUse = Random.Range(0, dots.Length);
+                        maxInteration++;
+                    }
+                    maxInteration = 0;
+                    GameObject dot = Instantiate(dots[dotToUse], temptPosition, Quaternion.identity);
+
+                    dot.GetComponent<Dot>().row = j;                              //make the slicing transition
+                    dot.GetComponent<Dot>().column = i;
+                    dot.transform.parent = this.transform;
+                    dot.name = "( " + i + ", " + j + " )";
+                    allDots[i, j] = dot;
                 }
-                maxInteration = 0;
-                GameObject dot = Instantiate(dots[dotToUse], temptPosition, Quaternion.identity);
-
-                dot.GetComponent<Dot>().row = j;                              //make the slicing transition
-                dot.GetComponent<Dot>().column = i;
-                dot.transform.parent = this.transform;
-                dot.name = "( " + i + ", " + j + " )";
-                allDots[i, j] = dot;
+                
             }
         }
     }
     private bool MatchesAt(int column, int row, GameObject piece)       //could we have only one paramether piece ?
     {                                                                   //why piece.column is not ok
+        
         if(column > 1 && row > 1)
         {
-            if (allDots[column - 1, row].tag == piece.tag && allDots[column - 2, row].tag == piece.tag) return true;
-            if (allDots[column, row - 1].tag == piece.tag && allDots[column, row - 2].tag == piece.tag) return true;
+            if (allDots[column - 1, row] != null && allDots[column - 2, row] != null) {
+
+                if (allDots[column - 1, row].tag == piece.tag && allDots[column - 2, row].tag == piece.tag) return true;
+            }
+            if (allDots[column, row - 1] != null && allDots[column, row - 1] != null) {
+
+                if (allDots[column, row - 1].tag == piece.tag && allDots[column, row - 2].tag == piece.tag) return true;
+            }
         }
         else if(column <= 1 || row <= 1)
         {
             if(row > 1)
             {
-                if (allDots[column, row - 1].tag == piece.tag && allDots[column, row - 2].tag == piece.tag) return true;
+                if (allDots[column, row - 1] != null && allDots[column, row - 2] != null) {
+
+                    if (allDots[column, row - 1].tag == piece.tag && allDots[column, row - 2].tag == piece.tag) return true;
+                }
             }
             if(column > 1)
             {
-                if (allDots[column - 1, row].tag == piece.tag && allDots[column - 2, row].tag == piece.tag) return true;
+                if (allDots[column - 1, row] != null && allDots[column - 2, row] != null) {
+
+                    if (allDots[column - 1, row].tag == piece.tag && allDots[column - 2, row].tag == piece.tag) return true;
+                }
             }
         }
         return false;

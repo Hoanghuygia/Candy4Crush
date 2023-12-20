@@ -44,12 +44,7 @@ public class Dot : MonoBehaviour
         AdjacentBomb = false;
         board = FindObjectOfType<Board>();
         findMatches = FindObjectOfType<FindMatches>();
-        //targetX = (int)transform.position.x;
-        //targetY = (int)transform.position.y;
-        //row = targetY;
-        //column = targetX;
-        //prevousColumn = column;
-        //prevousRow = row;
+
     }
 
     // Update is called once per frame
