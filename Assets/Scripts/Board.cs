@@ -403,7 +403,6 @@ public class Board : MonoBehaviour{
                 if (allDots[i, j] != null) {
                     if (!blankSpaces[i, j]) {
                         int piecesToUse = Random.Range(0, newBoard.Count);
-                        Dot piece = newBoard[piecesToUse].GetComponent<Dot>();
 
                         int maxInteration = 0;
                         while (MatchesAt(i, j, newBoard[piecesToUse]) && maxInteration < 100) //why we need maxInteration ?
@@ -411,7 +410,10 @@ public class Board : MonoBehaviour{
                             piecesToUse = Random.Range(0, newBoard.Count);
                             maxInteration++;
                         }
+                        Dot piece = newBoard[piecesToUse].GetComponent<Dot>();      //the order of the statement is important
+
                         maxInteration = 0;
+
 
                         piece.column = i;
                         piece.row = j;
