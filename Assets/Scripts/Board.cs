@@ -25,10 +25,12 @@ public class Board : MonoBehaviour{
     public int height;
     public int offSet;
     public GameObject tilePrefab;
+    public GameObject breakableTilePrefab;
     public GameObject[] dots;
     public GameObject destroyEffect;
     public TypeTile[] boardLayout;  //make public so it can be seen it the inspector
     private bool[,] blankSpaces;
+    private BackgroundTile[,] breakableTiles;
     public GameObject[,] allDots;
     public Dot currentDot;
     private FindMatches findMatches;
@@ -36,6 +38,7 @@ public class Board : MonoBehaviour{
     void Start(){
         findMatches = FindObjectOfType<FindMatches>();
         blankSpaces = new bool[width, height];
+        breakableTiles = new BackgroundTile[width, height];
         allDots = new GameObject[width, height];
         SetUp();
     }
@@ -46,9 +49,20 @@ public class Board : MonoBehaviour{
             }
         }
     }
+    public void GenerateBreakableTiles() {
+        for(int i = 0; i< boardLayout.Length; i++) {
+            if (boardLayout[i].tileKind == TileKind.Breakable) {
+                Vector2 temp = new Vector2(boardLayout[i].x, boardLayout[i].y);
+                GameObject tile = Instantiate(breakableTilePrefab, temp, Quaternion.identity);
+                breakableTiles[boardLayout[i].x, boardLayout[i].y] = tile.GetComponent<BackgroundTile>();
+                Debug.Log("Hit Points: " + breakableTiles[boardLayout[i].x, boardLayout[i].y].hitPoints);
+            }
+        }
+    }
     private void SetUp()
     {
         GenerateBlankSpaces();
+        GenerateBreakableTiles();
         for (int i = 0; i < width; i++){
             for (int j = 0; j < height; j++) {
                 if (!blankSpaces[i, j]) {
@@ -199,6 +213,11 @@ public class Board : MonoBehaviour{
             if(findMatches.currentMatches.Count >= 4) {//why we need to check 7 dots
                 CheckToMakeBomb();
             }
+
+            //check if the tile need to break
+            if (breakableTiles[column, row] != null) {
+                breakableTiles[column, row].TakeDamage(1);
+            }
             findMatches.currentMatches.Remove(allDots[column, row]);     //each time we destroy the matches, also remove from the list
             GameObject particle = Instantiate(destroyEffect, allDots[column, row].transform.position, Quaternion.identity);
             Destroy(particle, .5f); 
@@ -225,7 +244,7 @@ public class Board : MonoBehaviour{
             for(int j = 0; j < height; j++) {
                 if (!blankSpaces[i, j] && allDots[i, j] == null) {
                     for(int k = j + 1; k < height; k++) {
-                        if (allDots[i, k] != null) {
+                        if (allDots[i, k] != null) {        //shift the pieces that is not blank and not empty to the destroyed one
                             allDots[i, k].GetComponent<Dot>().row = j;
                             allDots[i, k] = null;
                             break;
