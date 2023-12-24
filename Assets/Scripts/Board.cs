@@ -55,6 +55,7 @@ public class Board : MonoBehaviour{
                 Vector2 temp = new Vector2(boardLayout[i].x, boardLayout[i].y);
                 GameObject tile = Instantiate(breakableTilePrefab, temp, Quaternion.identity);
                 breakableTiles[boardLayout[i].x, boardLayout[i].y] = tile.GetComponent<BackgroundTile>();
+                Debug.Log("Hit Points: " + breakableTiles[boardLayout[i].x, boardLayout[i].y].hitPoints);
             }
         }
     }
