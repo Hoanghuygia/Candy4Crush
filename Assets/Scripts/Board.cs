@@ -217,7 +217,11 @@ public class Board : MonoBehaviour{
             //check if the tile need to break
             if (breakableTiles[column, row] != null) {
                 breakableTiles[column, row].TakeDamage(1);
+                if (breakableTiles[column, row].hitPoints <= 0) {
+                    breakableTiles[column, row] = null;
+                }
             }
+
             findMatches.currentMatches.Remove(allDots[column, row]);     //each time we destroy the matches, also remove from the list
             GameObject particle = Instantiate(destroyEffect, allDots[column, row].transform.position, Quaternion.identity);
             Destroy(particle, .5f); 
