@@ -8,15 +8,19 @@ public class BackgroundTile : MonoBehaviour
     private SpriteRenderer sprite;
     public void Start() {
         sprite = GetComponent<SpriteRenderer>();
+        
     }
-    public void TakeDamage(int damage) {
-        hitPoints -= damage;
-        MakeLighter();
-    }
+    
     public void Update() { 
         if(hitPoints <= 0) {
             Destroy(this.gameObject);
         }
+    }
+    public void TakeDamage(int damage) {
+        //Debug.Log("Hit points: " + hitPoints);
+        hitPoints -= damage;
+        //Debug.Log("HP: " + hitPoints);
+        MakeLighter();
     }
     public void MakeLighter() {
         //take the current color
