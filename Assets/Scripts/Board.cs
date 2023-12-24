@@ -320,6 +320,7 @@ public class Board : MonoBehaviour{
         yield return new WaitForSeconds(.5f);
         if (DeadBlock()) {
             Debug.Log("This is a deadblock");
+            ShuffleBoard();
         }
         currentState = GameState.move;
     }
@@ -387,5 +388,34 @@ public class Board : MonoBehaviour{
             }
         }
         return true;
+    }
+    private void ShuffleBoard() {
+        List<GameObject> newBoard = new List<GameObject>();
+        for(int i = 0; i < width; i++) {
+            for(int j = 0; j < height; j++) {
+                if (allDots[i, j] != null) {
+                    newBoard.Add(allDots[i, j]);
+                }
+            }
+        }
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                if (allDots[i, j] != null) {
+                    if (!blankSpaces[i, j]) {
+                        int piecesToUse = Random.Range(0, newBoard.Count);
+                        Dot piece = newBoard[piecesToUse].GetComponent<Dot>();
+                        piece.column = i;
+                        piece.row = j;
+                        allDots[i, j] = newBoard[piecesToUse];
+                        newBoard.Remove(newBoard[piecesToUse]);
+                    }
+                }
+            }
+        }
+
+        //check if it is deadblock
+        if (DeadBlock()) {
+            ShuffleBoard();
+        }
     }
 }
