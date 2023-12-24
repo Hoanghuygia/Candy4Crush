@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using System.Security.Cryptography;
+using TMPro;
 using UnityEngine;
 
 public enum GameState {
@@ -217,7 +219,11 @@ public class Board : MonoBehaviour{
             //check if the tile need to break
             if (breakableTiles[column, row] != null) {
                 breakableTiles[column, row].TakeDamage(1);
+                if (breakableTiles[column, row].hitPoints <= 0) {
+                    breakableTiles[column, row] = null;
+                }
             }
+
             findMatches.currentMatches.Remove(allDots[column, row]);     //each time we destroy the matches, also remove from the list
             GameObject particle = Instantiate(destroyEffect, allDots[column, row].transform.position, Quaternion.identity);
             Destroy(particle, .5f); 
@@ -312,6 +318,74 @@ public class Board : MonoBehaviour{
         findMatches.currentMatches.Clear();
         currentDot = null;
         yield return new WaitForSeconds(.5f);
+        if (DeadBlock()) {
+            Debug.Log("This is a deadblock");
+        }
         currentState = GameState.move;
+    }
+    private void SwitchPieces(int column, int row, Vector2 direction) {
+        //Hold the second dot
+        GameObject holder = allDots[column + (int)direction.x, row + (int)direction.y] as GameObject;
+        //switch the first dot to be the second dot
+        allDots[column + (int)direction.x, row + (int)direction.y] = allDots[column, row];
+        //set the first dot to be the second dot
+        allDots[column, row] = holder;
+    }
+    private bool CheckForMatches() {//I think that we could improve by only checking the nearby dots
+        for(int i = 0; i < width; i++) {
+            for(int j = 0; j < height; j++) {
+                if (allDots[i, j] != null) {
+                    if(i < width - 2) {
+                        //check the dot to the right exists
+                        if (allDots[i + 1, j] != null && allDots[i + 2, j] != null) {
+                            if (allDots[i + 1, j].tag == allDots[i, j].tag
+                                && allDots[i + 2, j].tag == allDots[i, j].tag) {
+                                return true;
+                            }
+                        }
+                    }
+                    if(j < height - 2) {
+                        //check dot up 
+                        if (allDots[i, j + 1] != null && allDots[i, j + 2] != null) {
+                            if (allDots[i, j + 1].tag == allDots[i, j].tag
+                                && allDots[i, j + 2].tag == allDots[i, j].tag) {
+                                return true;
+                            }
+                        }
+                    }
+                    
+                }
+            }
+        }
+        return false;
+    }
+    private bool SwitchAndCheck(int column, int row, Vector2 direction) {
+        SwitchPieces(column, row, direction);
+        if (CheckForMatches()) {
+            SwitchPieces(column, row, direction);
+            return true;
+        }
+        else//why they do not let it in the else statement
+        {
+            SwitchPieces(column, row, direction);
+            return false;
+        }
+    }
+    private bool DeadBlock() {
+        for(int i = 0; i < width; i++) {
+            for(int j = 0; j < height; j++) {
+                if (allDots[i, j] != null) {
+                    if(i < width - 1) {
+                        if (SwitchAndCheck(i, j, Vector2.right)) 
+                            return false;
+                    }
+                    if(j < height - 1) {
+                        if(SwitchAndCheck(i, j, Vector2.up)) 
+                            return false;
+                    }
+                }
+            }
+        }
+        return true;
     }
 }
