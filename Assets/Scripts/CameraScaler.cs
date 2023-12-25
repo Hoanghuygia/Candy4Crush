@@ -6,6 +6,7 @@ public class CameraScaler : MonoBehaviour
 {
     private Board board;
     public float cameraOffet;
+    public float yOffset = 1;
     public float aspectRatio = 0.625f;
     public float padding = 2;       //the ratio between aspectRatio and padding have to equals to the ratio of the camera (this case is 16-9)
     // Start is called before the first frame update
@@ -18,7 +19,7 @@ public class CameraScaler : MonoBehaviour
         }
     }
     void RepostionCamera(float x, float y) {
-        Vector3 temPosition = new Vector3(x/2, y/2, cameraOffet);
+        Vector3 temPosition = new Vector3(x/2, y/2 + yOffset, cameraOffet);
         transform.position = temPosition;
         if(board.width >= board.height) {
             Camera.main.orthographicSize = (board.width / 2 + padding) / aspectRatio;
