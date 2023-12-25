@@ -40,6 +40,7 @@ public class Board : MonoBehaviour{
     private int streakValue = 1;
     private ScoreManager scoreManager;
     public float refillDelay = .5f;
+    public int[] scoreGoals;
 
     void Start(){
         findMatches = FindObjectOfType<FindMatches>();
