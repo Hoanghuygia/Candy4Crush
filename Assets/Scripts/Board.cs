@@ -36,6 +36,8 @@ public class Board : MonoBehaviour{
     public GameObject[,] allDots;
     public Dot currentDot;
     private FindMatches findMatches;
+    private SoundManager soundManager;
+
     public int basePieceValue = 20;
     private int streakValue = 1;
     private ScoreManager scoreManager;
@@ -45,6 +47,7 @@ public class Board : MonoBehaviour{
     void Start(){
         findMatches = FindObjectOfType<FindMatches>();
         scoreManager = FindObjectOfType<ScoreManager>();
+        soundManager = FindObjectOfType<SoundManager>();
         blankSpaces = new bool[width, height];
         breakableTiles = new BackgroundTile[width, height];
         allDots = new GameObject[width, height];
@@ -232,7 +235,13 @@ public class Board : MonoBehaviour{
             }
 
             findMatches.currentMatches.Remove(allDots[column, row]);     //each time we destroy the matches, also remove from the list
+
+            if(soundManager != null) {
+                soundManager.PlayRandomDestroyNoise();
+            }
             GameObject particle = Instantiate(destroyEffect, allDots[column, row].transform.position, Quaternion.identity);
+
+
             Destroy(particle, .5f); 
             Destroy(allDots[column, row]);          //this code is to destroy the game object 
             scoreManager.IncreaseScore(basePieceValue * streakValue);
