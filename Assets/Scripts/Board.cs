@@ -69,7 +69,8 @@ public class Board : MonoBehaviour{
             for (int j = 0; j < height; j++) {
                 if (!blankSpaces[i, j]) {
                     Vector2 temptPosition = new Vector2(i, j + offSet);
-                    GameObject backgroundTile = Instantiate(tilePrefab, temptPosition, Quaternion.identity) as GameObject;
+                    Vector2 tilePosition = new Vector2(i, j);
+                    GameObject backgroundTile = Instantiate(tilePrefab, tilePosition, Quaternion.identity) as GameObject;
                     backgroundTile.transform.parent = this.transform;
                     backgroundTile.name = "( " + i + ", " + j + " )";
 
