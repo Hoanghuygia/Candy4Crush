@@ -36,9 +36,14 @@ public class Board : MonoBehaviour{
     public GameObject[,] allDots;
     public Dot currentDot;
     private FindMatches findMatches;
+    public int basePieceValue = 20;
+    private int streakValue = 1;
+    private ScoreManager scoreManager;
+    public float refillDelay = .5f;
 
     void Start(){
         findMatches = FindObjectOfType<FindMatches>();
+        scoreManager = FindObjectOfType<ScoreManager>();
         blankSpaces = new bool[width, height];
         breakableTiles = new BackgroundTile[width, height];
         allDots = new GameObject[width, height];
@@ -69,7 +74,8 @@ public class Board : MonoBehaviour{
             for (int j = 0; j < height; j++) {
                 if (!blankSpaces[i, j]) {
                     Vector2 temptPosition = new Vector2(i, j + offSet);
-                    GameObject backgroundTile = Instantiate(tilePrefab, temptPosition, Quaternion.identity) as GameObject;
+                    Vector2 tilePosition = new Vector2(i, j);
+                    GameObject backgroundTile = Instantiate(tilePrefab, tilePosition, Quaternion.identity) as GameObject;
                     backgroundTile.transform.parent = this.transform;
                     backgroundTile.name = "( " + i + ", " + j + " )";
 
@@ -228,6 +234,7 @@ public class Board : MonoBehaviour{
             GameObject particle = Instantiate(destroyEffect, allDots[column, row].transform.position, Quaternion.identity);
             Destroy(particle, .5f); 
             Destroy(allDots[column, row]);          //this code is to destroy the game object 
+            scoreManager.IncreaseScore(basePieceValue * streakValue);
             allDots[column, row] = null;
         }
     }
@@ -259,7 +266,7 @@ public class Board : MonoBehaviour{
                 }
             }
         }
-        yield return new WaitForSeconds(.4f);
+        yield return new WaitForSeconds(refillDelay * .5f);
         StartCoroutine(FillBoardCo());
     }
     private IEnumerator DecreaseRowCo() {
@@ -285,7 +292,13 @@ public class Board : MonoBehaviour{
             for(int j = 0; j < height; j++) {
                 if (allDots[i, j] == null && !blankSpaces[i, j]) {// && !blankSpaces[i, j]
                     Vector2 tempPosition = new Vector2(i, j + offSet);
-                    int dotToUse = Random.Range(0, dots.Length);
+                    int dotToUse = Random.Range(0, dots.Length);//dont know. I think that should be a feature not a bug
+                    int maxInteration = 0;
+                    while(MatchesAt(i, j, dots[dotToUse]) && maxInteration < 100) {
+                        maxInteration++;
+                        dotToUse = Random.Range(0, dots.Length);
+                    }
+                    maxInteration = 0;
                     GameObject piece = Instantiate(dots[dotToUse], tempPosition, Quaternion.identity);
                     allDots[i, j] = piece;
                     piece.GetComponent<Dot>().row = j;
@@ -309,20 +322,22 @@ public class Board : MonoBehaviour{
     }
     private IEnumerator FillBoardCo() {
         ReffillBoard();
-        yield return new WaitForSeconds(.5f);
+        yield return new WaitForSeconds(refillDelay);
 
         while (MatchesOnBoard()) {
-            yield return new WaitForSeconds(.5f);
+            streakValue += 1;
             DestroyMatches();
+            yield return new WaitForSeconds(2 * refillDelay);
         }
         findMatches.currentMatches.Clear();
         currentDot = null;
-        yield return new WaitForSeconds(.5f);
+        yield return new WaitForSeconds(refillDelay);
         if (DeadBlock()) {
             Debug.Log("This is a deadblock");
             ShuffleBoard();
         }
         currentState = GameState.move;
+        streakValue = 1;        //mean that if you destroy in a row the point would multiply
     }
     private void SwitchPieces(int column, int row, Vector2 direction) {
         //Hold the second dot
