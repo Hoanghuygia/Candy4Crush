@@ -1,18 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GoalPanel : MonoBehaviour
 {
-    // Start is called before the first frame update
+    public Image thisImage;
+    public Sprite thisSprite;
+    public Text thisText;
+    public string thisString;
     void Start()
     {
-        
+        SetUp();
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+    void SetUp() {
+        thisImage.sprite = thisSprite;
+        thisText.text = thisString;
     }
 }
