@@ -18,6 +18,7 @@ public class Dot : MonoBehaviour
     public GameObject otherDot;
     private FindMatches findMatches;
     private Board board;
+    private EndGameManager endGameManager;
     private Vector2 firstTouchPosition;
     private Vector2 finalTouchPosition;
     private Vector2 tempPosition;
@@ -46,6 +47,7 @@ public class Dot : MonoBehaviour
         board = FindObjectOfType<Board>();
         findMatches = FindObjectOfType<FindMatches>();
         hintManager = FindObjectOfType<HintManager>();
+        endGameManager = FindObjectOfType<EndGameManager>();
 
     }
 
@@ -119,6 +121,7 @@ public class Dot : MonoBehaviour
                 findMatches.MatchPiecesOfColor(this.gameObject.tag);
                 otherDot.GetComponent<Dot>().Matched = true;
             }
+
             if(!Matched && !otherDot.GetComponent<Dot>().Matched)
             {
                 otherDot.GetComponent<Dot>().column = column;
@@ -131,8 +134,12 @@ public class Dot : MonoBehaviour
             }
             else
             {
+                if(endGameManager != null) {
+                    if(endGameManager.requirements.gameType == GameType.Moves) {
+                        endGameManager.DecreaseCounterValue();
+                    }
+                }
                 board.DestroyMatches();
-                
             }
             otherDot = null;        //we want to set the null value to null since it can affect other swipe later
         }
