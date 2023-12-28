@@ -12,6 +12,7 @@ TagManager:
   - Green
   - Pink
   - Purple
+  - Breakable
   layers:
   - Default
   - TransparentFX
