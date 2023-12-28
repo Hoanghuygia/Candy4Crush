@@ -37,6 +37,7 @@ public class Board : MonoBehaviour{
     public Dot currentDot;
     private FindMatches findMatches;
     private SoundManager soundManager;
+    private GoalManager goalManager;
 
     public int basePieceValue = 20;
     private int streakValue = 1;
@@ -48,6 +49,7 @@ public class Board : MonoBehaviour{
         findMatches = FindObjectOfType<FindMatches>();
         scoreManager = FindObjectOfType<ScoreManager>();
         soundManager = FindObjectOfType<SoundManager>();
+        goalManager = FindObjectOfType<GoalManager>();
         blankSpaces = new bool[width, height];
         breakableTiles = new BackgroundTile[width, height];
         allDots = new GameObject[width, height];
@@ -234,7 +236,14 @@ public class Board : MonoBehaviour{
                 }
             }
 
+            if(goalManager != null) {
+                goalManager.CompareGoal(allDots[column, row].tag.ToString());
+                goalManager.UpdateGoal();
+            }
+
             findMatches.currentMatches.Remove(allDots[column, row]);     //each time we destroy the matches, also remove from the list
+
+
 
             if(soundManager != null) {
                 soundManager.PlayRandomDestroyNoise();
