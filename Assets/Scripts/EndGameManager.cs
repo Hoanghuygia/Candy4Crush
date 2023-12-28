@@ -41,18 +41,19 @@ public class EndGameManager : MonoBehaviour
         counter.text = "" + currentCounterValue;
     }
     public void DecreaseCounterValue() {
-        if(currentCounterValue >= 1) {
+        currentCounterValue--;
+        counter.text = "" + currentCounterValue;
 
-            currentCounterValue--;
+        if (currentCounterValue <= 0) {
+            Debug.Log("You lose111");
+            currentCounterValue = 0;
             counter.text = "" + currentCounterValue;
         }
-        else {
-            Debug.Log("You lose111");
-        }
+        
 
     }
     public void Update() {
-        if(requirements.gameType == GameType.Time) {
+        if(requirements.gameType == GameType.Time && currentCounterValue > 0) {
             timerSecond -= Time.deltaTime;
             if(timerSecond <= 0) {
                 DecreaseCounterValue();

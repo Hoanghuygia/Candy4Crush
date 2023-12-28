@@ -219,7 +219,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   requirements:
     gameType: 0
-    counterValue: 40
+    counterValue: 2
   movesLabel: {fileID: 1385249493}
   timeLabel: {fileID: 1472642615}
   counter: {fileID: 1069394737}
