@@ -15,15 +15,19 @@ public class EndGameRequirements {
 }
 public class EndGameManager : MonoBehaviour
 {
+    public Board board;
     public EndGameRequirements requirements;
     public GameObject movesLabel;
     public GameObject timeLabel;
+    public GameObject winPanel;
+    public GameObject tryAgainPanel;
     public Text counter;
 
     public int currentCounterValue;
     private float timerSecond;
 
     public void Start() {
+        board = FindObjectOfType<Board>();
         SetUpGame();
     }
 
@@ -41,16 +45,31 @@ public class EndGameManager : MonoBehaviour
         counter.text = "" + currentCounterValue;
     }
     public void DecreaseCounterValue() {
-        currentCounterValue--;
-        counter.text = "" + currentCounterValue;
-
-        if (currentCounterValue <= 0) {
-            Debug.Log("You lose111");
-            currentCounterValue = 0;
+        if(board.currentState == GameState.move) {         //i think that we need to let it more specific by ==move, he use != pause
+            currentCounterValue--;
             counter.text = "" + currentCounterValue;
-        }
-        
 
+            if (currentCounterValue <= 0) {
+                LoseGame();
+            }
+        }
+    }
+    public void LoseGame() {
+        tryAgainPanel.SetActive(true);
+        Debug.Log("You lose111");
+        board.currentState = GameState.lose;
+        currentCounterValue = 0;
+        counter.text = "" + currentCounterValue;
+        FadePanelControllers fade = FindAnyObjectByType<FadePanelControllers>();
+        fade.GameOver();
+    }
+    public void WinGame() {
+        winPanel.SetActive(true);
+        board.currentState = GameState.win;
+        currentCounterValue = 0;
+        counter.text = "" + currentCounterValue;
+        FadePanelControllers fade = FindAnyObjectByType<FadePanelControllers>();
+        fade.GameOver();
     }
     public void Update() {
         if(requirements.gameType == GameType.Time && currentCounterValue > 0) {

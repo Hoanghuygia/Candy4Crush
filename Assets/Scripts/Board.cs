@@ -7,7 +7,10 @@ using UnityEngine;
 
 public enum GameState {
     wait,
-    move
+    move,
+    win,
+    lose,
+    pause
 }
 public enum TileKind {
     Breakable,
@@ -54,6 +57,7 @@ public class Board : MonoBehaviour{
         breakableTiles = new BackgroundTile[width, height];
         allDots = new GameObject[width, height];
         SetUp();
+        currentState = GameState.pause;
     }
     public void GenerateBlankSpaces() {
         for(int i = 0; i< boardLayout.Length; i++) {
