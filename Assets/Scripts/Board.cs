@@ -7,7 +7,10 @@ using UnityEngine;
 
 public enum GameState {
     wait,
-    move
+    move,
+    win,
+    lose,
+    pause
 }
 public enum TileKind {
     Breakable,
@@ -39,11 +42,30 @@ public class Board : MonoBehaviour{
     private SoundManager soundManager;
     private GoalManager goalManager;
 
+    [Header("Scriptble Object stuff")]
+    public World world;
+    public int level;
+
     public int basePieceValue = 20;
     private int streakValue = 1;
     private ScoreManager scoreManager;
     public float refillDelay = .5f;
     public int[] scoreGoals;
+
+    private void Awake() {
+        if(level < world.levels.Length) {
+            if (world != null) {
+                if (world.levels[level] != null) {
+                    width = world.levels[level].width;
+                    height = world.levels[level].height;
+                    dots = world.levels[level].dots;
+                    scoreGoals = world.levels[level].scoreGoals;
+                    boardLayout = world.levels[level].boardLayout;
+                }
+            }
+        }
+        
+    }
 
     void Start(){
         findMatches = FindObjectOfType<FindMatches>();
@@ -54,6 +76,7 @@ public class Board : MonoBehaviour{
         breakableTiles = new BackgroundTile[width, height];
         allDots = new GameObject[width, height];
         SetUp();
+        currentState = GameState.pause;
     }
     public void GenerateBlankSpaces() {
         for(int i = 0; i< boardLayout.Length; i++) {

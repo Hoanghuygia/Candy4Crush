@@ -17,9 +17,25 @@ public class GoalManager : MonoBehaviour
     public GameObject goalPrefab;
     public GameObject goalIntroParent;
     public GameObject goalGameParent;
+    private EndGameManager endGameManager;
+    private Board board;
 
     private void Start() {
+        endGameManager = FindObjectOfType<EndGameManager>();
+        board = FindObjectOfType<Board>();
+        GetGoals();
         SetUpGoals();
+    }
+    void GetGoals() {
+        if(board != null) {
+            if(board.world != null) {
+                if (board.level < board.world.levels.Length) {
+                    if (board.world.levels[board.level] != null) {
+                        levelGoal = board.world.levels[board.level].levelGoal;
+                    }
+                }
+            }
+        }
     }
 
     void SetUpGoals() {
@@ -54,7 +70,11 @@ public class GoalManager : MonoBehaviour
             }
         }
         if(goalComplete >= levelGoal.Length) {
+            if(endGameManager != null) {
+                endGameManager.WinGame();
+            }
             Debug.Log("You win!!1");
+
         }
     }
     public void CompareGoal(string goalToCompare) {
