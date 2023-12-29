@@ -31,3 +31,11 @@ MonoBehaviour:
   - {fileID: 2752850887699840374, guid: 0c801a6e1bbb12f40888b0289672fe59, type: 3}
   - {fileID: 8375765422112767573, guid: 7c555cf029a95654d8d2d5d77f195b85, type: 3}
   scoreGoals: e00100003002000000040000
+  endGameRequirements:
+    gameType: 0
+    counterValue: 10
+  levelGoal:
+  - numberNeeded: 2
+    numberCollected: 0
+    goalSprite: {fileID: 21300000, guid: cac46b71d3c8eb84bb0fd98cbc2663ff, type: 3}
+    matchValue: Blur Pink

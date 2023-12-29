@@ -18,4 +18,8 @@ public class Level : ScriptableObject
 
     [Header("Score goals")]
     public int[] scoreGoals;
+
+    [Header("End game requirement")]
+    public EndGameRequirements endGameRequirements;
+    public BlankGoal[] levelGoal;
 }

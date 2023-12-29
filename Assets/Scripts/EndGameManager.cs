@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -28,7 +29,17 @@ public class EndGameManager : MonoBehaviour
 
     public void Start() {
         board = FindObjectOfType<Board>();
+        SetGameType();
         SetUpGame();
+    }
+    void SetGameType() {
+        if (board.level < board.world.levels.Length) {
+            if (board.world != null) {
+                if (board.world.levels[board.level] != null) {
+                    requirements = board.world.levels[board.level].endGameRequirements;
+                }
+            }
+        }
     }
 
     public void SetUpGame() {

@@ -21,3 +21,11 @@ MonoBehaviour:
   - {fileID: 5876353445563931100, guid: dac84bb99bb031b468196b5cd1fc0308, type: 3}
   - {fileID: 9172819047167482933, guid: a8bbead115920d044a35e20f4d96f39b, type: 3}
   scoreGoals: 3c0000007800000068010000
+  endGameRequirements:
+    gameType: 0
+    counterValue: 20
+  levelGoal:
+  - numberNeeded: 10
+    numberCollected: 0
+    goalSprite: {fileID: 21300000, guid: a993ddbcad3e78c44a35c76680b4dceb, type: 3}
+    matchValue: Blur Yellow
