@@ -520,32 +520,10 @@ MonoBehaviour:
   - {fileID: 9021656650578996743, guid: 77da4c7aeaa6b3b4ea2519b2bce796fe, type: 3}
   - {fileID: 3601970357930638613, guid: a4247c6b75203e54db87b907f8b9d3bc, type: 3}
   destroyEffect: {fileID: 307754034106730797, guid: daaf7a1625cc20341a7003e665eb8937, type: 3}
-  boardLayout:
-  - x: 0
-    y: 0
-    tileKind: 1
-  - x: 5
-    y: 0
-    tileKind: 1
-  - x: 5
-    y: 7
-    tileKind: 1
-  - x: 0
-    y: 7
-    tileKind: 1
-  - x: 3
-    y: 3
-    tileKind: 0
-  - x: 3
-    y: 4
-    tileKind: 0
-  - x: 2
-    y: 3
-    tileKind: 0
-  - x: 2
-    y: 4
-    tileKind: 0
+  boardLayout: []
   currentDot: {fileID: 0}
+  world: {fileID: 11400000, guid: 740fdc9a6a2bcd34b8ff44be98a6ea5f, type: 2}
+  level: 2
   basePieceValue: 20
   refillDelay: 0.5
   scoreGoals: 2c010000f401000058020000
