@@ -1999,7 +1999,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7352a03113a5b74e8ffe7221288c34e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Actice: 0
+  Actice: 1
   activeSprite: {fileID: 21300000, guid: 29c70413af603d046a6e7142c3bd5256, type: 3}
   lockedSprite: {fileID: 21300000, guid: cb63aa17cf50936488cda203f62c9b4e, type: 3}
   starts:
