@@ -205,7 +205,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 23755307}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 235594079}
+        m_TargetAssemblyTypeName: BackToSplash, Assembly-CSharp
+        m_MethodName: OK
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &23755307
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -304,6 +316,7 @@ GameObject:
   m_Component:
   - component: {fileID: 235594077}
   - component: {fileID: 235594078}
+  - component: {fileID: 235594079}
   m_Layer: 0
   m_Name: EndGameManager
   m_TagString: Untagged
@@ -340,7 +353,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   board: {fileID: 0}
   requirements:
-    gameType: 0
+    gameType: 1
     counterValue: 100
   movesLabel: {fileID: 1385249493}
   timeLabel: {fileID: 1472642615}
@@ -348,6 +361,19 @@ MonoBehaviour:
   tryAgainPanel: {fileID: 2054056114}
   counter: {fileID: 1069394737}
   currentCounterValue: 0
+--- !u!114 &235594079
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 235594076}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 263f7fa89ec4cf44fb6e042fb8dabecc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneToLoad: Splash
 --- !u!1 &382238970
 GameObject:
   m_ObjectHideFlags: 0
@@ -523,7 +549,7 @@ MonoBehaviour:
   boardLayout: []
   currentDot: {fileID: 0}
   world: {fileID: 11400000, guid: 740fdc9a6a2bcd34b8ff44be98a6ea5f, type: 2}
-  level: 99
+  level: 2
   basePieceValue: 20
   refillDelay: 0.5
   scoreGoals: 2c010000f401000058020000
@@ -3561,7 +3587,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2099704128}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 235594079}
+        m_TargetAssemblyTypeName: BackToSplash, Assembly-CSharp
+        m_MethodName: OK
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &2099704128
 MonoBehaviour:
   m_ObjectHideFlags: 0
