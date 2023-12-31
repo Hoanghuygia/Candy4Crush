@@ -25,9 +25,11 @@ public class GameData : MonoBehaviour
         else {
             Destroy(this.gameObject);//E.g when back from the main screen, it checks whether the splash scene exist or not
         }
+        Load();
+
     }
     private void Start() {
-        Load();
+
     }
     public void Save() {
         //Create a binary formatter which can read binary files
