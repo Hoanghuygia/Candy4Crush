@@ -9,11 +9,20 @@ public class ConfirmPanel : MonoBehaviour
 {
     public string levelToLoad;
     public Image[] stars;
+    private int startsActive;
     public int level;
+    private GameData gameData;
     // Start is called before the first frame update
     void Start()
     {
+        gameData = FindAnyObjectByType<GameData>();
+        LoadData();         //i think that we could reference it to the level button class instead
         ActiveStars();
+    }
+    void LoadData() {
+        if(gameData != null) {
+            startsActive = gameData.saveData.stars[level - 1];
+        }
     }
 
     // Update is called once per frame
@@ -22,8 +31,8 @@ public class ConfirmPanel : MonoBehaviour
         
     }
     void ActiveStars() {
-        for (int i = 0; i < stars.Length; i++) {
-            stars[i].enabled = false;
+        for (int i = 0; i < startsActive; i++) {
+            stars[i].enabled = true;
         }
     }
     public void Cancel() {
