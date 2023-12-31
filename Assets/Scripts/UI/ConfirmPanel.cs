@@ -19,7 +19,7 @@ public class ConfirmPanel : MonoBehaviour
     public Text highScoreText;
     public Text starText;
 
-    void Start()
+    void OnEnable()
     {
         gameData = FindAnyObjectByType<GameData>();
         LoadData();         //i think that we could reference it to the level button class instead
