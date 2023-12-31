@@ -7,13 +7,34 @@ using System.Security.Cryptography;
 
 public class ConfirmPanel : MonoBehaviour
 {
+    [Header("Level Information")]
     public string levelToLoad;
-    public Image[] stars;
     public int level;
-    // Start is called before the first frame update
-    void Start()
+    private GameData gameData;
+    private int startsActive;
+    private int highScore;
+
+    [Header("UI stuff")]
+    public Image[] stars;
+    public Text highScoreText;
+    public Text starText;
+
+    void OnEnable()
     {
+        gameData = FindAnyObjectByType<GameData>();
+        LoadData();         //i think that we could reference it to the level button class instead
         ActiveStars();
+        SetText();
+    }
+    void LoadData() {
+        if(gameData != null) {
+            startsActive = gameData.saveData.stars[level - 1];
+            highScore = gameData.saveData.highScore[level - 1];
+        }
+    }
+    void SetText() {
+        highScoreText.text = "" + highScore;
+        starText.text = "" + startsActive + "/3";
     }
 
     // Update is called once per frame
@@ -22,8 +43,8 @@ public class ConfirmPanel : MonoBehaviour
         
     }
     void ActiveStars() {
-        for (int i = 0; i < stars.Length; i++) {
-            stars[i].enabled = false;
+        for (int i = 0; i < startsActive; i++) {
+            stars[i].enabled = true;
         }
     }
     public void Cancel() {
