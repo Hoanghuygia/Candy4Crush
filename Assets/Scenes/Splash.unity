@@ -2906,7 +2906,7 @@ MonoBehaviour:
   - {fileID: 783122567}
   - {fileID: 1175006594}
   levelText: {fileID: 927857120}
-  level: 1
+  level: 4
   confirmPanel: {fileID: 1906196320}
 --- !u!114 &827219569
 MonoBehaviour:
@@ -3600,7 +3600,7 @@ MonoBehaviour:
   - {fileID: 1182102788}
   - {fileID: 504508891}
   levelText: {fileID: 1388952737}
-  level: 1
+  level: 5
   confirmPanel: {fileID: 1906196320}
 --- !u!114 &995369144
 MonoBehaviour:
@@ -4367,7 +4367,7 @@ MonoBehaviour:
   - {fileID: 805992432}
   - {fileID: 1762178661}
   levelText: {fileID: 2061061383}
-  level: 1
+  level: 9
   confirmPanel: {fileID: 1906196320}
 --- !u!114 &1186333478
 MonoBehaviour:
@@ -4832,7 +4832,7 @@ MonoBehaviour:
   - {fileID: 966345286}
   - {fileID: 1772582398}
   levelText: {fileID: 2096586560}
-  level: 1
+  level: 2
   confirmPanel: {fileID: 1906196320}
 --- !u!114 &1360374163
 MonoBehaviour:
@@ -6238,7 +6238,7 @@ MonoBehaviour:
   - {fileID: 952472377}
   - {fileID: 1850423009}
   levelText: {fileID: 1195520245}
-  level: 1
+  level: 8
   confirmPanel: {fileID: 1906196320}
 --- !u!114 &1760636055
 MonoBehaviour:
@@ -6472,7 +6472,7 @@ MonoBehaviour:
   - {fileID: 1993123115}
   - {fileID: 565711871}
   levelText: {fileID: 996853758}
-  level: 1
+  level: 7
   confirmPanel: {fileID: 1906196320}
 --- !u!114 &1763151246
 MonoBehaviour:
@@ -6785,7 +6785,7 @@ MonoBehaviour:
   - {fileID: 1329040952}
   - {fileID: 1821129350}
   levelText: {fileID: 971921743}
-  level: 1
+  level: 6
   confirmPanel: {fileID: 1906196320}
 --- !u!114 &1785217722
 MonoBehaviour:
@@ -7641,7 +7641,7 @@ MonoBehaviour:
   - {fileID: 1887894639}
   - {fileID: 1787503723}
   levelText: {fileID: 71463174}
-  level: 1
+  level: 3
   confirmPanel: {fileID: 1906196320}
 --- !u!114 &1958943019
 MonoBehaviour:
