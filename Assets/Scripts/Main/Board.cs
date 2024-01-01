@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Security.Cryptography;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public enum GameState {
@@ -17,6 +18,60 @@ public enum TileKind {
     Blank,
     Normal
 }
+[System.Serializable]
+public class Stack { 
+    private int[] ele; 
+    private int top; 
+    private int max; 
+    public Stack(int size){ 
+        ele = new int[size]; 
+        top = -1; 
+        max = size; 
+    } 
+    public bool Empty() {
+        return top == -1;
+    }
+    public bool Full() {
+        return top == max - 1;
+    }
+  
+    public void push(int item){ 
+        if (top == max - 1) { 
+            return; 
+        } 
+        else { 
+            ele[++top] = item; 
+        } 
+    } 
+  
+    public int pop(){ 
+        if (top == -1) { 
+            return -1; 
+        } 
+        else { 
+            return ele[top--]; 
+        } 
+    } 
+  
+    public int peek(){ 
+        if (top == -1) { 
+            return -1; 
+        } 
+        else { 
+            return ele[top]; 
+        } 
+    } 
+  
+    public void printStack(){ 
+        if (top == -1) { 
+            return; 
+        } 
+        else { 
+            for (int i = 0; i <= top; i++) { 
+            } 
+        } 
+    } 
+} 
 [System.Serializable]   //this help unity to known the below should serilize
 public class TypeTile {
     public int x;
@@ -164,16 +219,7 @@ public class Board : MonoBehaviour{
         }
         return false;
     }
-    //private bool MatchesAt(GameObject piece)
-    //{
-    //    if (piece.column > 1 && piece.row > 1)
-    //    {
-    //        if (allDots[column - 1, row].tag == piece.tag || allDots[column - 2, row].tag == piece.tag) return true;
-    //        if (allDots[column, row - 1].tag == piece.tag || allDots[column, row - 2].tag == piece.tag) return true;
-    //        piece.
-    //    }
-    //    return false;
-    //}
+
     private bool ColumnOrRow() {//this function is to check if this belong to two kind of five match (vertical or horizontial) => true
         int numberHorizotial = 0;
         int numberVertical = 0;

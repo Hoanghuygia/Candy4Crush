@@ -63,11 +63,7 @@ public class Dot : MonoBehaviour
     }
     void Update()
     {
-        //FindMatches();
-        //if (Matched) {
-        //    SpriteRenderer mySprite = GetComponent<SpriteRenderer>();
-        //    mySprite.color = new Color(1f, 1f, 1f, .2f);
-        //}
+
         targetX = column;
         targetY = row;
         if (Mathf.Abs(targetX - transform.position.x) > .1)
@@ -122,7 +118,7 @@ public class Dot : MonoBehaviour
                 otherDot.GetComponent<Dot>().Matched = true;
             }
 
-            if(!Matched && !otherDot.GetComponent<Dot>().Matched)
+            if(!Matched && !otherDot.GetComponent<Dot>().Matched)       //reset back to the prevous location
             {
                 otherDot.GetComponent<Dot>().column = column;
                 otherDot.GetComponent<Dot>().row = row;
