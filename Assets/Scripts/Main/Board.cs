@@ -378,7 +378,6 @@ public class Board : MonoBehaviour{
         currentDot = null;
         yield return new WaitForSeconds(refillDelay);
         if (DeadBlock()) {
-            Debug.Log("This is a deadblock");
             ShuffleBoard();
         }
         currentState = GameState.move;

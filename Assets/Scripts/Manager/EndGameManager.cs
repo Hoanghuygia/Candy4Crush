@@ -56,7 +56,8 @@ public class EndGameManager : MonoBehaviour
         counter.text = "" + currentCounterValue;
     }
     public void DecreaseCounterValue() {
-        if(board.currentState == GameState.move) {         //i think that we need to let it more specific by ==move, he use != pause
+        Debug.Log("State: " + board.currentState.ToString());
+        if(board.currentState != GameState.pause) {    //if we want to change this to move, we have to use couroutine instead     
             currentCounterValue--;
             counter.text = "" + currentCounterValue;
 
@@ -67,7 +68,6 @@ public class EndGameManager : MonoBehaviour
     }
     public void LoseGame() {
         tryAgainPanel.SetActive(true);
-        Debug.Log("You lose111");
         board.currentState = GameState.lose;
         currentCounterValue = 0;
         counter.text = "" + currentCounterValue;
