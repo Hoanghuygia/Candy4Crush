@@ -108,6 +108,7 @@ public class Dot : MonoBehaviour
     }
     public IEnumerator CheckMoveCo()            //this function is to make the pieces back the prevous place or destroy 
     {
+
         yield return new WaitForSeconds(.5f);
         if(otherDot != null)
         {
@@ -125,8 +126,16 @@ public class Dot : MonoBehaviour
                 otherDot.GetComponent<Dot>().Matched = true;
             }
 
-            if(!Matched && !otherDot.GetComponent<Dot>().Matched)//back to before location if no matched
+
+            if (!Matched && !otherDot.GetComponent<Dot>().Matched)//back to before location if no matched
             {
+                board.moveActual = false;
+                for (int i = 0; i < board.width; i++) {
+                    for (int j = 0; j < board.height; j++) {
+                        Debug.Log("The tag of " + i + "," + j + " is: " + board.currentAllDots[i, j].tag);//add getcomponet
+                    }
+                }
+                Debug.Log("Move Actual: " + board.moveActual.ToString());
                 otherDot.GetComponent<Dot>().column = column;
                 otherDot.GetComponent<Dot>().row = row;
                 row = prevousRow;
@@ -138,12 +147,14 @@ public class Dot : MonoBehaviour
             else
             {
                 //save here not ok since it has change to matched
-                board.currentAllDots = board.allDots;
-                for(int i = 0; i < board.width; i++) {
-                    for(int j = 0; j < board.height; j++) {
+                /*board.currentAllDots = board.allDots; */      //if we save here, we save the result after swap
+                board.moveActual = true;
+                for (int i = 0; i < board.width; i++) {
+                    for (int j = 0; j < board.height; j++) {
                         Debug.Log("The tag of " + i + "," + j + " is: " + board.currentAllDots[i, j].tag);
                     }
                 }
+                Debug.Log("Move Actual: " + board.moveActual.ToString());
                 Debug.Log("Implemented!!");
                 if (endGameManager != null) {
                     if(endGameManager.requirements.gameType == GameType.Moves) {
@@ -176,6 +187,8 @@ public class Dot : MonoBehaviour
         if(Mathf.Abs(finalTouchPosition.y - firstTouchPosition.y) > swipeResist ||
             Mathf.Abs(finalTouchPosition.x - firstTouchPosition.x) > swipeResist){
             board.currentState = GameState.wait;
+            Array.Copy(board.allDots, board.currentAllDots, board.allDots.Length);
+
 
             swipeAngle = Mathf.Atan2(finalTouchPosition.y - firstTouchPosition.y, finalTouchPosition.x - firstTouchPosition.x) * 180 / Mathf.PI;
             MovePieces();
@@ -207,7 +220,8 @@ public class Dot : MonoBehaviour
     }
     void MovePieces()
     {
-        if(swipeAngle > -45 && swipeAngle <= 45 && column < board.width - 1)
+
+        if (swipeAngle > -45 && swipeAngle <= 45 && column < board.width - 1)
         {
             //Right swipe
             //otherDot = board.allDots[column + 1, row];//this line is to take the other dot

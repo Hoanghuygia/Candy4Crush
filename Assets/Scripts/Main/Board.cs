@@ -26,6 +26,7 @@ public class TypeTile {
 public class Board : MonoBehaviour{
 
     public GameState currentState = GameState.move;
+    public bool moveActual = false;
     public int width;
     public int height;
     public int offSet;
@@ -80,7 +81,7 @@ public class Board : MonoBehaviour{
         blankSpaces = new bool[width, height];
         breakableTiles = new BackgroundTile[width, height];
         allDots = new GameObject[width, height];
-        currentAllDots = allDots;
+        currentAllDots = new GameObject[width, height];
         stack = new Stacks(5);
         SetUp();
         currentState = GameState.pause;
