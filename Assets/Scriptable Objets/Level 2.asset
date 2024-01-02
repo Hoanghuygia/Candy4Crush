@@ -29,12 +29,12 @@ MonoBehaviour:
   - numberNeeded: 5
     numberCollected: 0
     goalSprite: {fileID: 21300000, guid: 02ac0253722a9864f94ba2e7f4eb0cb1, type: 3}
-    matchValue: Beige
+    matchValue: Black
   - numberNeeded: 5
     numberCollected: 0
     goalSprite: {fileID: 21300000, guid: a993ddbcad3e78c44a35c76680b4dceb, type: 3}
-    matchValue: Blur Yellow
+    matchValue: Purple
   - numberNeeded: 5
     numberCollected: 0
     goalSprite: {fileID: 21300000, guid: cac46b71d3c8eb84bb0fd98cbc2663ff, type: 3}
-    matchValue: Blur Pink
+    matchValue: Green

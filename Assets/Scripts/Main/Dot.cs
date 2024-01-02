@@ -95,7 +95,7 @@ public class Dot : MonoBehaviour
             if (board.allDots[column, row] != this.gameObject) {
                 board.allDots[column, row] = this.gameObject;
             }
-            findMatches.FindAllMatches();
+            findMatches.FindAllMatches();//update all the dot that need to be matched
 
         }
         else
@@ -109,20 +109,23 @@ public class Dot : MonoBehaviour
     public IEnumerator CheckMoveCo()            //this function is to make the pieces back the prevous place or destroy 
     {
         yield return new WaitForSeconds(.5f);
-        if(otherDot != null)        //why we have to check whether it is null or not
+        if(otherDot != null)
         {
             if (ColorBomb) {
+                //save here ok
                 findMatches.MatchPiecesOfColor(otherDot.tag);//it means that it would destroy the color when two pieces has the same color
                 //this piece is a color bomb and the other piece is the color to destroy
                 Matched = true;
             }
             else if (otherDot.GetComponent<Dot>().ColorBomb) {
+                //save here ok
+
                 //the other dot is the color bomb
                 findMatches.MatchPiecesOfColor(this.gameObject.tag);
                 otherDot.GetComponent<Dot>().Matched = true;
             }
 
-            if(!Matched && !otherDot.GetComponent<Dot>().Matched)
+            if(!Matched && !otherDot.GetComponent<Dot>().Matched)//back to before location if no matched
             {
                 otherDot.GetComponent<Dot>().column = column;
                 otherDot.GetComponent<Dot>().row = row;
@@ -134,7 +137,15 @@ public class Dot : MonoBehaviour
             }
             else
             {
-                if(endGameManager != null) {
+                //save here not ok since it has change to matched
+                board.currentAllDots = board.allDots;
+                for(int i = 0; i < board.width; i++) {
+                    for(int j = 0; j < board.height; j++) {
+                        Debug.Log("The tag of " + i + "," + j + " is: " + board.currentAllDots[i, j].tag);
+                    }
+                }
+                Debug.Log("Implemented!!");
+                if (endGameManager != null) {
                     if(endGameManager.requirements.gameType == GameType.Moves) {
                         endGameManager.DecreaseCounterValue();
                     }

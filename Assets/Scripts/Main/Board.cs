@@ -37,6 +37,8 @@ public class Board : MonoBehaviour{
     private bool[,] blankSpaces;
     private BackgroundTile[,] breakableTiles;
     public GameObject[,] allDots;
+    public GameObject[,] currentAllDots;
+    public Stacks stack;
     public Dot currentDot;
     private FindMatches findMatches;
     private SoundManager soundManager;
@@ -78,8 +80,15 @@ public class Board : MonoBehaviour{
         blankSpaces = new bool[width, height];
         breakableTiles = new BackgroundTile[width, height];
         allDots = new GameObject[width, height];
+        currentAllDots = allDots;
+        stack = new Stacks(5);
         SetUp();
         currentState = GameState.pause;
+    }
+    public void Undo() {
+        if(stack != null) {
+
+        }
     }
     public void GenerateBlankSpaces() {
         for(int i = 0; i< boardLayout.Length; i++) {
@@ -124,7 +133,7 @@ public class Board : MonoBehaviour{
                     dot.GetComponent<Dot>().row = j;                              //make the slicing transition
                     dot.GetComponent<Dot>().column = i;
                     dot.transform.parent = this.transform;
-                    dot.name = "( " + i + ", " + j + " )";
+                    dot.name = "Dot" + "( " + i + ", " + j + " )";
                     allDots[i, j] = dot;
                 }
                 
