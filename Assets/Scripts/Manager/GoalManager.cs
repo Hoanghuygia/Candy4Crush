@@ -76,8 +76,7 @@ public class GoalManager : MonoBehaviour
             if(endGameManager != null) {
                 endGameManager.WinGame();
             }
-            Debug.Log("You win!!1");
-
+            //Debug.Log("You win!!1");
         }
     }
     public void CompareGoal(string goalToCompare) {

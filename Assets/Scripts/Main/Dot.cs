@@ -130,12 +130,12 @@ public class Dot : MonoBehaviour
             if (!Matched && !otherDot.GetComponent<Dot>().Matched)//back to before location if no matched
             {
                 board.moveActual = false;
-                for (int i = 0; i < board.width; i++) {
-                    for (int j = 0; j < board.height; j++) {
-                        Debug.Log("The tag of " + i + "," + j + " is: " + board.currentAllDots[i, j].tag);//add getcomponet
-                    }
-                }
-                Debug.Log("Move Actual: " + board.moveActual.ToString());
+                //for (int i = 0; i < board.width; i++) {
+                //    for (int j = 0; j < board.height; j++) {
+                //        Debug.Log("The tag of " + i + "," + j + " is: " + board.currentAllDots[i, j].tag);//add getcomponet
+                //    }
+                //}
+                //Debug.Log("Move Actual: " + board.moveActual.ToString());
                 otherDot.GetComponent<Dot>().column = column;
                 otherDot.GetComponent<Dot>().row = row;
                 row = prevousRow;
@@ -149,18 +149,19 @@ public class Dot : MonoBehaviour
                 //save here not ok since it has change to matched
                 /*board.currentAllDots = board.allDots; */      //if we save here, we save the result after swap
                 board.moveActual = true;
-                for (int i = 0; i < board.width; i++) {
-                    for (int j = 0; j < board.height; j++) {
-                        Debug.Log("The tag of " + i + "," + j + " is: " + board.currentAllDots[i, j].tag);
-                    }
-                }
-                Debug.Log("Move Actual: " + board.moveActual.ToString());
-                Debug.Log("Implemented!!");
+                //for (int i = 0; i < board.width; i++) {
+                //    for (int j = 0; j < board.height; j++) {
+                //        Debug.Log("The tag of " + i + "," + j + " is: " + board.currentAllDots[i, j].tag);
+                //    }
+                //}
+                //Debug.Log("Move Actual: " + board.moveActual.ToString());
+                //Debug.Log("Implemented!!");
                 if (endGameManager != null) {
                     if(endGameManager.requirements.gameType == GameType.Moves) {
                         endGameManager.DecreaseCounterValue();
                     }
                 }
+                //good place to place TakeToStack() 
                 board.DestroyMatches();
             }
             otherDot = null;        //we want to set the null value to null since it can affect other swipe later

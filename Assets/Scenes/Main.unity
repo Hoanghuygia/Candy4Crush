@@ -534,9 +534,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentState: 1
+  moveActual: 0
   width: 6
   height: 8
   offSet: 20
+  stackSize: 5
   tilePrefab: {fileID: 4794523875102041569, guid: 4f5b4d3e4e61af84e89a7377e4621e01, type: 3}
   breakableTilePrefab: {fileID: 2461153449465637356, guid: 9d4ca842fd5d3aa439996a0d05930d18, type: 3}
   dots:

@@ -30,6 +30,7 @@ public class Board : MonoBehaviour{
     public int width;
     public int height;
     public int offSet;
+    public int stackSize;
     public GameObject tilePrefab;
     public GameObject breakableTilePrefab;
     public GameObject[] dots;
@@ -81,14 +82,26 @@ public class Board : MonoBehaviour{
         blankSpaces = new bool[width, height];
         breakableTiles = new BackgroundTile[width, height];
         allDots = new GameObject[width, height];
-        currentAllDots = new GameObject[width, height];
-        stack = new Stacks(5);
+        currentAllDots = new GameObject[width, height];     //this function it only implement only one time, however, if I set currentAllDots = allDots, it would deault make two array equals
+        stack = new Stacks(stackSize);
         SetUp();
         currentState = GameState.pause;
     }
     public void Undo() {
         if(stack != null) {
 
+        }
+    }
+    public void TakeToStack() {
+        if(stack != null) {
+            if(moveActual) {
+                if(currentAllDots != null) {
+                    stack.DeleteRear();         //this function only implement when the stack is full, no need to check
+                    stack.push(currentAllDots);
+                    Debug.Log("Push to stack");
+                }
+            }
+            
         }
     }
     public void GenerateBlankSpaces() {
@@ -199,7 +212,6 @@ public class Board : MonoBehaviour{
                 }
             }
         }
-        Debug.Log("Column: " + numberHorizotial + "  Row: " + numberVertical);
         return (numberVertical == 5 || numberHorizotial == 5);
     }
     private void CheckToMakeBomb() {
@@ -295,7 +307,14 @@ public class Board : MonoBehaviour{
     }
     public void DestroyMatches()
     {
-        for(int i = 0; i < width; i++)
+        //good place to place TakeToStack() 
+        TakeToStack();
+        if (stack.Full()) {
+            Debug.Log("This is full now!!!!");
+        }
+        //Debug.Log("Move Actual: " + moveActual.ToString());
+        //Debug.Log("Implemented");
+        for (int i = 0; i < width; i++)
         {
             for(int j = 0; j < height; j++)
             {
