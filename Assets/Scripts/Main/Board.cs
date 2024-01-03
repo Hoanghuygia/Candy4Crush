@@ -96,13 +96,36 @@ public class Board : MonoBehaviour{
         if(stack != null) {
             if(moveActual) {
                 if(currentAllDots != null) {
-                    stack.DeleteRear();         //this function only implement when the stack is full, no need to check
-                    stack.push(currentAllDots);
-                    Debug.Log("Push to stack");
+                    if (stack.Empty()) {
+                        stack.push(currentAllDots);
+                        Debug.Log("Push to stack");
+                    }
+                    else if (!ArrayEquals(allDots, stack.peek())) {
+                        stack.DeleteRear();         //this function only implement when the stack is full, no need to check
+                        stack.push(currentAllDots);
+                        Debug.Log("Push to stack");
+                    }
+                    else {
+                        Debug.Log("Huy dep trai");
+                    }
                 }
             }
             
         }
+    }
+    public bool ArrayEquals(GameObject[,] arr1, GameObject[,] arr2) {
+        if (arr1.GetLength(0) != arr2.GetLength(0) || arr1.GetLength(1) != arr2.GetLength(1)) {
+            return false;
+        }
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                if (!arr1[i, j].GetComponent<Dot>().tag.Equals( arr2[i, j].GetComponent<Dot>().tag)) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
     public void GenerateBlankSpaces() {
         for(int i = 0; i< boardLayout.Length; i++) {
