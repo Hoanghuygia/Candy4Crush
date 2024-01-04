@@ -56,6 +56,7 @@ public class Dot : MonoBehaviour
     //This is for testing and debug only.
     private void OnMouseOver() {
         if (Input.GetMouseButtonDown(1)) {
+            //board.Undo();
             AdjacentBomb = true;
             GameObject marker = Instantiate(adjacentMarker, transform.position, Quaternion.identity);
             marker.transform.parent = this.transform;
@@ -188,6 +189,7 @@ public class Dot : MonoBehaviour
         if(Mathf.Abs(finalTouchPosition.y - firstTouchPosition.y) > swipeResist ||
             Mathf.Abs(finalTouchPosition.x - firstTouchPosition.x) > swipeResist){
             board.currentState = GameState.wait;
+            board.pushTime = 1;
             Array.Copy(board.allDots, board.currentAllDots, board.allDots.Length);
 
 

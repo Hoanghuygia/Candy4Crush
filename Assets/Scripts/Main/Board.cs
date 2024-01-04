@@ -17,6 +17,46 @@ public enum TileKind {
     Blank,
     Normal
 }
+
+//[System.Serializable]
+//public class Stacks {
+//    public GameObject[][,] stack;
+//    private int front;
+//    private int max;
+//    public Stacks(int size) {
+//        stack = new GameObject[size][,];
+//        front = -1;
+//        max = size;
+//    }
+//    public bool Empty() {
+//        return front == -1;
+//    }
+//    public bool Full() {
+//        return front == max - 1;
+//    }
+
+//    public void push(GameObject[,] item) {
+//        front++;
+//        stack[front] = item;
+//    }
+
+//    public GameObject[,] pop() {
+//        return stack[front--];       //I think that we do not need to check it empty or full because 
+
+//    }
+
+//    public GameObject[,] peek() {
+//        return stack[front];
+//    }
+//    public void DeleteRear() {
+//        if (front == max - 1) {          //Only do this function when the stack is full
+//            for (int i = 0; i < stack.Length - 1; i++) {
+//                stack[i] = stack[i + 1];
+//            }
+//            front--;
+//        }
+//    }
+//}
 [System.Serializable]   //this help unity to known the below should serilize
 public class TypeTile {
     public int x;
@@ -31,6 +71,7 @@ public class Board : MonoBehaviour{
     public int height;
     public int offSet;
     public int stackSize;
+    public int pushTime = 1;
     public GameObject tilePrefab;
     public GameObject breakableTilePrefab;
     public GameObject[] dots;
@@ -40,7 +81,7 @@ public class Board : MonoBehaviour{
     private BackgroundTile[,] breakableTiles;
     public GameObject[,] allDots;
     public GameObject[,] currentAllDots;
-    public Stacks stack;
+    public Stacks UndoStack;
     public Dot currentDot;
     private FindMatches findMatches;
     private SoundManager soundManager;
@@ -83,34 +124,34 @@ public class Board : MonoBehaviour{
         breakableTiles = new BackgroundTile[width, height];
         allDots = new GameObject[width, height];
         currentAllDots = new GameObject[width, height];     //this function it only implement only one time, however, if I set currentAllDots = allDots, it would deault make two array equals
-        stack = new Stacks(stackSize);
+        UndoStack = new Stacks(stackSize);
         SetUp();
         currentState = GameState.pause;
     }
     public void Undo() {
-        if(stack != null) {
-
-        }
-    }
-    public void TakeToStack() {
-        if(stack != null) {
-            if(moveActual) {
-                if(currentAllDots != null) {
-                    if (stack.Empty()) {
-                        stack.push(currentAllDots);
-                        Debug.Log("Push to stack");
-                    }
-                    else if (!ArrayEquals(allDots, stack.peek())) {
-                        stack.DeleteRear();         //this function only implement when the stack is full, no need to check
-                        stack.push(currentAllDots);
-                        Debug.Log("Push to stack");
-                    }
-                    else {
-                        Debug.Log("Huy dep trai");
+        if(UndoStack != null) {
+           for(int i = 0; i < width; i++) {
+                for(int j = 0; j < height; j++) {
+                    if (allDots[i, j] != null && !blankSpaces[i, j]) { 
+                        allDots[i, j] = UndoStack.pop()[i, j];
                     }
                 }
             }
-            
+        }
+    }
+    public void TakeToStack() {
+        if (UndoStack != null) {
+            if (moveActual) {
+                if (currentAllDots != null) {
+                    if(pushTime == 1) {
+                        UndoStack.DeleteRear();
+                        UndoStack.push(currentAllDots);
+                        Debug.Log("Pushed to stack");
+                        pushTime = 0;
+                    }
+                    
+                }
+            }
         }
     }
     public bool ArrayEquals(GameObject[,] arr1, GameObject[,] arr2) {
@@ -119,12 +160,14 @@ public class Board : MonoBehaviour{
         }
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
-                if (!arr1[i, j].GetComponent<Dot>().tag.Equals( arr2[i, j].GetComponent<Dot>().tag)) {
+                Debug.Log("currentAllDots" + i + "," + j + " : " + arr1[i, j].tag);
+                Debug.Log("UndoStack: " + arr1[i, j].tag);
+                if (!(arr1[i, j].tag.Equals(arr2[i, j].tag))) {
+                    
                     return false;
                 }
             }
         }
-
         return true;
     }
     public void GenerateBlankSpaces() {
@@ -332,7 +375,7 @@ public class Board : MonoBehaviour{
     {
         //good place to place TakeToStack() 
         TakeToStack();
-        if (stack.Full()) {
+        if (UndoStack.Full()) {
             Debug.Log("This is full now!!!!");
         }
         //Debug.Log("Move Actual: " + moveActual.ToString());

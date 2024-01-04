@@ -25,7 +25,7 @@ MonoBehaviour:
     gameType: 1
     counterValue: 1000
   levelGoal:
-  - numberNeeded: 5
+  - numberNeeded: 999
     numberCollected: 0
     goalSprite: {fileID: 21300000, guid: a993ddbcad3e78c44a35c76680b4dceb, type: 3}
     matchValue: Purple

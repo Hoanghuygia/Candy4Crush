@@ -19,20 +19,21 @@ public class Stacks {
     }
 
     public void push(GameObject[,] item) {
-            stack[++front] = item; 
+        front++;
+        stack[front] = item;
     }
 
     public GameObject[,] pop() {
         return stack[front--];       //I think that we do not need to check it empty or full because 
-        
+
     }
 
     public GameObject[,] peek() {
-            return stack[front];
+        return stack[front];
     }
     public void DeleteRear() {
-        if(front == max - 1) {          //Only do this function when the stack is full
-            for(int i = 0; i < stack.Length - 1; i++) {
+        if (front == max - 1) {          //Only do this function when the stack is full
+            for (int i = 0; i < stack.Length - 1; i++) {
                 stack[i] = stack[i + 1];
             }
             front--;
