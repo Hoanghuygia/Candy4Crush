@@ -17,6 +17,10 @@ public enum TileKind {
     Blank,
     Normal
 }
+
+//[System.Serializable]
+
+
 [System.Serializable]   //this help unity to known the below should serilize
 public class TypeTile {
     public int x;
@@ -26,9 +30,12 @@ public class TypeTile {
 public class Board : MonoBehaviour{
 
     public GameState currentState = GameState.move;
+    public bool moveActual = false;
     public int width;
     public int height;
     public int offSet;
+    public int stackSize;
+    public int pushTime = 1;
     public GameObject tilePrefab;
     public GameObject breakableTilePrefab;
     public GameObject[] dots;
@@ -37,6 +44,10 @@ public class Board : MonoBehaviour{
     private bool[,] blankSpaces;
     private BackgroundTile[,] breakableTiles;
     public GameObject[,] allDots;
+
+    public string[,] beforeSwipeTag;
+    public string[,] currentDotsTag;
+    public Stacks UndoStack;
     public Dot currentDot;
     private FindMatches findMatches;
     private SoundManager soundManager;
@@ -78,8 +89,58 @@ public class Board : MonoBehaviour{
         blankSpaces = new bool[width, height];
         breakableTiles = new BackgroundTile[width, height];
         allDots = new GameObject[width, height];
+        beforeSwipeTag = new string[width, height];
+        UndoStack = new Stacks(stackSize);
         SetUp();
         currentState = GameState.pause;
+    }
+    public void Undo() {
+        if(UndoStack != null && !UndoStack.Empty()) {
+            LoadBoardFromStack();
+        }
+        if (UndoStack.Empty()) {
+            Debug.Log("The stack is empty!!!");
+        }
+    }
+    public void TakeToStack() {
+        if (UndoStack != null) {
+            if (moveActual) {
+                if (beforeSwipeTag != null) {
+                    if(pushTime == 1) {
+                        UndoStack.DeleteRear();
+                        string[,] cloneOfBeforeSwipeTag = (string[,])beforeSwipeTag.Clone();
+                        UndoStack.push(cloneOfBeforeSwipeTag);
+                        Debug.Log("Pushed to stack");
+                        pushTime = 0;
+                    }
+                }
+            }
+        }
+    }
+    public void showStack() {
+        for(int i = 0; i < UndoStack.front; i++) {
+            for(int j = 0; j < width; j++) {
+                for(int k = 0; k < height; k++) {
+                    Debug.Log("The tag " + i + ", " + j + ", " + k + " is: " + UndoStack.stack[i][j, k]);
+                }
+            }
+        }
+    }
+    public bool ArrayEquals(GameObject[,] arr1, GameObject[,] arr2) {
+        if (arr1.GetLength(0) != arr2.GetLength(0) || arr1.GetLength(1) != arr2.GetLength(1)) {
+            return false;
+        }
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                Debug.Log("currentAllDots" + i + "," + j + " : " + arr1[i, j].tag);
+                Debug.Log("UndoStack: " + arr1[i, j].tag);
+                if (!(arr1[i, j].tag.Equals(arr2[i, j].tag))) {
+                    
+                    return false;
+                }
+            }
+        }
+        return true;
     }
     public void GenerateBlankSpaces() {
         for(int i = 0; i< boardLayout.Length; i++) {
@@ -124,7 +185,7 @@ public class Board : MonoBehaviour{
                     dot.GetComponent<Dot>().row = j;                              //make the slicing transition
                     dot.GetComponent<Dot>().column = i;
                     dot.transform.parent = this.transform;
-                    dot.name = "( " + i + ", " + j + " )";
+                    dot.name = "Dot" + "( " + i + ", " + j + " )";
                     allDots[i, j] = dot;
                 }
                 
@@ -164,16 +225,6 @@ public class Board : MonoBehaviour{
         }
         return false;
     }
-    //private bool MatchesAt(GameObject piece)
-    //{
-    //    if (piece.column > 1 && piece.row > 1)
-    //    {
-    //        if (allDots[column - 1, row].tag == piece.tag || allDots[column - 2, row].tag == piece.tag) return true;
-    //        if (allDots[column, row - 1].tag == piece.tag || allDots[column, row - 2].tag == piece.tag) return true;
-    //        piece.
-    //    }
-    //    return false;
-    //}
     private bool ColumnOrRow() {//this function is to check if this belong to two kind of five match (vertical or horizontial) => true
         int numberHorizotial = 0;
         int numberVertical = 0;
@@ -189,7 +240,6 @@ public class Board : MonoBehaviour{
                 }
             }
         }
-        Debug.Log("Column: " + numberHorizotial + "  Row: " + numberVertical);
         return (numberVertical == 5 || numberHorizotial == 5);
     }
     private void CheckToMakeBomb() {
@@ -285,7 +335,13 @@ public class Board : MonoBehaviour{
     }
     public void DestroyMatches()
     {
-        for(int i = 0; i < width; i++)
+        TakeToStack();
+        
+        if (UndoStack.Full()) {
+            Debug.Log("This is full now!!!!");
+        }
+
+        for (int i = 0; i < width; i++)
         {
             for(int j = 0; j < height; j++)
             {
@@ -349,6 +405,27 @@ public class Board : MonoBehaviour{
                     piece.GetComponent<Dot>().row = j;
                     piece.GetComponent<Dot>().column = i;
                 }
+            }
+        }
+    }
+    public void LoadBoardFromStack() {
+        currentDotsTag = UndoStack.pop();
+        int dotToUse = 0;
+        for(int i = 0; i < width; i++) {
+            for(int j = 0; j < height; j++) {
+                Destroy(allDots[i, j]);
+                allDots[i, j] = null;
+                Vector2 tempPosition = new Vector2(i, j + offSet);
+                for(int k = 0; k < dots.Length; k++) {      //choose the right dot to use
+                    if (dots[k].tag.Equals(currentDotsTag[i, j])) {
+                        dotToUse = k;
+                        break;
+                    }
+                }
+                GameObject piece = Instantiate(dots[dotToUse], tempPosition, Quaternion.identity);
+                allDots[i, j] = piece;
+                piece.GetComponent<Dot>().row = j;
+                piece.GetComponent<Dot>().column = i;
             }
         }
     }

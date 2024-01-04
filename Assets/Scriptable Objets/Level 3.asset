@@ -38,4 +38,4 @@ MonoBehaviour:
   - numberNeeded: 2
     numberCollected: 0
     goalSprite: {fileID: 21300000, guid: cac46b71d3c8eb84bb0fd98cbc2663ff, type: 3}
-    matchValue: Blur Pink
+    matchValue: Green

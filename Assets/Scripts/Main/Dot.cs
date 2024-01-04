@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Dot : MonoBehaviour
@@ -56,6 +57,7 @@ public class Dot : MonoBehaviour
     //This is for testing and debug only.
     private void OnMouseOver() {
         if (Input.GetMouseButtonDown(1)) {
+            //board.Undo();
             AdjacentBomb = true;
             GameObject marker = Instantiate(adjacentMarker, transform.position, Quaternion.identity);
             marker.transform.parent = this.transform;
@@ -95,7 +97,7 @@ public class Dot : MonoBehaviour
             if (board.allDots[column, row] != this.gameObject) {
                 board.allDots[column, row] = this.gameObject;
             }
-            findMatches.FindAllMatches();
+            findMatches.FindAllMatches();//update all the dot that need to be matched
 
         }
         else
@@ -108,22 +110,34 @@ public class Dot : MonoBehaviour
     }
     public IEnumerator CheckMoveCo()            //this function is to make the pieces back the prevous place or destroy 
     {
+
         yield return new WaitForSeconds(.5f);
-        if(otherDot != null)        //why we have to check whether it is null or not
+        if(otherDot != null)
         {
             if (ColorBomb) {
+                //save here ok
                 findMatches.MatchPiecesOfColor(otherDot.tag);//it means that it would destroy the color when two pieces has the same color
                 //this piece is a color bomb and the other piece is the color to destroy
                 Matched = true;
             }
             else if (otherDot.GetComponent<Dot>().ColorBomb) {
+                //save here ok
+
                 //the other dot is the color bomb
                 findMatches.MatchPiecesOfColor(this.gameObject.tag);
                 otherDot.GetComponent<Dot>().Matched = true;
             }
 
-            if(!Matched && !otherDot.GetComponent<Dot>().Matched)
+
+            if (!Matched && !otherDot.GetComponent<Dot>().Matched)//back to before location if no matched
             {
+                board.moveActual = false;
+                //for (int i = 0; i < board.width; i++) {
+                //    for (int j = 0; j < board.height; j++) {
+                //        Debug.Log("The tag of " + i + "," + j + " is: " + board.currentAllDots[i, j].tag);//add getcomponet
+                //    }
+                //}
+                //Debug.Log("Move Actual: " + board.moveActual.ToString());
                 otherDot.GetComponent<Dot>().column = column;
                 otherDot.GetComponent<Dot>().row = row;
                 row = prevousRow;
@@ -134,11 +148,14 @@ public class Dot : MonoBehaviour
             }
             else
             {
-                if(endGameManager != null) {
+                board.moveActual = true;
+
+                if (endGameManager != null) {
                     if(endGameManager.requirements.gameType == GameType.Moves) {
                         endGameManager.DecreaseCounterValue();
                     }
                 }
+                //good place to place TakeToStack() 
                 board.DestroyMatches();
             }
             otherDot = null;        //we want to set the null value to null since it can affect other swipe later
@@ -165,7 +182,8 @@ public class Dot : MonoBehaviour
         if(Mathf.Abs(finalTouchPosition.y - firstTouchPosition.y) > swipeResist ||
             Mathf.Abs(finalTouchPosition.x - firstTouchPosition.x) > swipeResist){
             board.currentState = GameState.wait;
-
+            CopyTagString();
+            board.pushTime = 1;
             swipeAngle = Mathf.Atan2(finalTouchPosition.y - firstTouchPosition.y, finalTouchPosition.x - firstTouchPosition.x) * 180 / Mathf.PI;
             MovePieces();
             board.currentDot = this;            //keep track the current dot - the dot that is clicked
@@ -176,6 +194,16 @@ public class Dot : MonoBehaviour
         }
         
 
+    }
+    private void CopyTagString() {
+        for(int i = 0; i < board.width; i++) {
+            for(int j = 0; j < board.height; j++) {
+                board.beforeSwipeTag[i, j] = board.allDots[i, j].tag;
+                board.beforeSwipeTag[i, j] = (string)board.allDots[i, j].tag.Clone();
+                //I should not clone() here but in another place
+                //board.beforeSwipeTag[i, j] = new List<string>(board.allDots[i, j].tag);
+            }
+        }
     }
     private void MovePieceactual(Vector2 direction) {
 
@@ -196,7 +224,8 @@ public class Dot : MonoBehaviour
     }
     void MovePieces()
     {
-        if(swipeAngle > -45 && swipeAngle <= 45 && column < board.width - 1)
+
+        if (swipeAngle > -45 && swipeAngle <= 45 && column < board.width - 1)
         {
             //Right swipe
             //otherDot = board.allDots[column + 1, row];//this line is to take the other dot
