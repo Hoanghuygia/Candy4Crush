@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Dot : MonoBehaviour
@@ -147,16 +148,8 @@ public class Dot : MonoBehaviour
             }
             else
             {
-                //save here not ok since it has change to matched
-                /*board.currentAllDots = board.allDots; */      //if we save here, we save the result after swap
                 board.moveActual = true;
-                //for (int i = 0; i < board.width; i++) {
-                //    for (int j = 0; j < board.height; j++) {
-                //        Debug.Log("The tag of " + i + "," + j + " is: " + board.currentAllDots[i, j].tag);
-                //    }
-                //}
-                //Debug.Log("Move Actual: " + board.moveActual.ToString());
-                //Debug.Log("Implemented!!");
+
                 if (endGameManager != null) {
                     if(endGameManager.requirements.gameType == GameType.Moves) {
                         endGameManager.DecreaseCounterValue();
@@ -206,6 +199,9 @@ public class Dot : MonoBehaviour
         for(int i = 0; i < board.width; i++) {
             for(int j = 0; j < board.height; j++) {
                 board.beforeSwipeTag[i, j] = board.allDots[i, j].tag;
+                board.beforeSwipeTag[i, j] = (string)board.allDots[i, j].tag.Clone();
+                //I should not clone() here but in another place
+                //board.beforeSwipeTag[i, j] = new List<string>(board.allDots[i, j].tag);
             }
         }
     }

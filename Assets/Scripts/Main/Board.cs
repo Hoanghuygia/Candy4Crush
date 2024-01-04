@@ -18,45 +18,9 @@ public enum TileKind {
     Normal
 }
 
-[System.Serializable]
-public class Stacks {
-    public string[][,] stack;
-    private int front;
-    private int max;
-    public Stacks(int size) {
-        stack = new string[size][,];
-        front = -1;
-        max = size;
-    }
-    public bool Empty() {
-        return front == -1;
-    }
-    public bool Full() {
-        return front == max - 1;
-    }
+//[System.Serializable]
 
-    public void push(string[,] item) {
-        front++;
-        stack[front] = item;
-    }
 
-    public string[,] pop() {
-        return stack[front--];       //I think that we do not need to check it empty or full because 
-
-    }
-
-    public string[,] peek() {
-        return stack[front];
-    }
-    public void DeleteRear() {
-        if (front == max - 1) {          //Only do this function when the stack is full
-            for (int i = 0; i < stack.Length - 1; i++) {
-                stack[i] = stack[i + 1];
-            }
-            front--;
-        }
-    }
-}
 [System.Serializable]   //this help unity to known the below should serilize
 public class TypeTile {
     public int x;
@@ -132,17 +96,10 @@ public class Board : MonoBehaviour{
     }
     public void Undo() {
         if(UndoStack != null && !UndoStack.Empty()) {
-            Debug.Log("Enter the Undo Button already!!!");
-            //for(int i = 0; i < width; i++) {
-            //    for(int j = 0; j < height; j++) {
-            //        Debug.Log("The tag of " + i + "," + j + " is: " + beforeSwipeTag[i, j]);
-            //    }
-            //}
             LoadBoardFromStack();
         }
         if (UndoStack.Empty()) {
             Debug.Log("The stack is empty!!!");
-            //Need to show a panel to infor
         }
     }
     public void TakeToStack() {
@@ -151,11 +108,20 @@ public class Board : MonoBehaviour{
                 if (beforeSwipeTag != null) {
                     if(pushTime == 1) {
                         UndoStack.DeleteRear();
-                        UndoStack.push(beforeSwipeTag);
+                        string[,] cloneOfBeforeSwipeTag = (string[,])beforeSwipeTag.Clone();
+                        UndoStack.push(cloneOfBeforeSwipeTag);
                         Debug.Log("Pushed to stack");
                         pushTime = 0;
                     }
-                    
+                }
+            }
+        }
+    }
+    public void showStack() {
+        for(int i = 0; i < UndoStack.front; i++) {
+            for(int j = 0; j < width; j++) {
+                for(int k = 0; k < height; k++) {
+                    Debug.Log("The tag " + i + ", " + j + ", " + k + " is: " + UndoStack.stack[i][j, k]);
                 }
             }
         }
@@ -259,16 +225,6 @@ public class Board : MonoBehaviour{
         }
         return false;
     }
-    //private bool MatchesAt(GameObject piece)
-    //{
-    //    if (piece.column > 1 && piece.row > 1)
-    //    {
-    //        if (allDots[column - 1, row].tag == piece.tag || allDots[column - 2, row].tag == piece.tag) return true;
-    //        if (allDots[column, row - 1].tag == piece.tag || allDots[column, row - 2].tag == piece.tag) return true;
-    //        piece.
-    //    }
-    //    return false;
-    //}
     private bool ColumnOrRow() {//this function is to check if this belong to two kind of five match (vertical or horizontial) => true
         int numberHorizotial = 0;
         int numberVertical = 0;
@@ -379,13 +335,12 @@ public class Board : MonoBehaviour{
     }
     public void DestroyMatches()
     {
-        //good place to place TakeToStack() 
         TakeToStack();
+        
         if (UndoStack.Full()) {
             Debug.Log("This is full now!!!!");
         }
-        //Debug.Log("Move Actual: " + moveActual.ToString());
-        //Debug.Log("Implemented");
+
         for (int i = 0; i < width; i++)
         {
             for(int j = 0; j < height; j++)
@@ -455,11 +410,6 @@ public class Board : MonoBehaviour{
     }
     public void LoadBoardFromStack() {
         currentDotsTag = UndoStack.pop();
-        //for (int i = 0; i < width; i++) {
-        //    for (int j = 0; j < height; j++) {
-        //        Debug.Log("The tag of " + i + "," + j + " is: " + currentDotsTag[i, j]);
-        //    }
-        //}
         int dotToUse = 0;
         for(int i = 0; i < width; i++) {
             for(int j = 0; j < height; j++) {
@@ -469,12 +419,9 @@ public class Board : MonoBehaviour{
                 for(int k = 0; k < dots.Length; k++) {      //choose the right dot to use
                     if (dots[k].tag.Equals(currentDotsTag[i, j])) {
                         dotToUse = k;
-                        Debug.Log("Dot to use inside: " + i + "," + j + ": " + dotToUse);
-
                         break;
                     }
                 }
-                Debug.Log("Dot to use: " + dotToUse);
                 GameObject piece = Instantiate(dots[dotToUse], tempPosition, Quaternion.identity);
                 allDots[i, j] = piece;
                 piece.GetComponent<Dot>().row = j;
