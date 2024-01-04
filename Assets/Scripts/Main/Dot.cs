@@ -189,10 +189,8 @@ public class Dot : MonoBehaviour
         if(Mathf.Abs(finalTouchPosition.y - firstTouchPosition.y) > swipeResist ||
             Mathf.Abs(finalTouchPosition.x - firstTouchPosition.x) > swipeResist){
             board.currentState = GameState.wait;
+            CopyTagString();
             board.pushTime = 1;
-            Array.Copy(board.allDots, board.currentAllDots, board.allDots.Length);
-
-
             swipeAngle = Mathf.Atan2(finalTouchPosition.y - firstTouchPosition.y, finalTouchPosition.x - firstTouchPosition.x) * 180 / Mathf.PI;
             MovePieces();
             board.currentDot = this;            //keep track the current dot - the dot that is clicked
@@ -203,6 +201,13 @@ public class Dot : MonoBehaviour
         }
         
 
+    }
+    private void CopyTagString() {
+        for(int i = 0; i < board.width; i++) {
+            for(int j = 0; j < board.height; j++) {
+                board.beforeSwipeTag[i, j] = board.allDots[i, j].tag;
+            }
+        }
     }
     private void MovePieceactual(Vector2 direction) {
 

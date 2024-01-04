@@ -539,6 +539,7 @@ MonoBehaviour:
   height: 8
   offSet: 20
   stackSize: 5
+  pushTime: 1
   tilePrefab: {fileID: 4794523875102041569, guid: 4f5b4d3e4e61af84e89a7377e4621e01, type: 3}
   breakableTilePrefab: {fileID: 2461153449465637356, guid: 9d4ca842fd5d3aa439996a0d05930d18, type: 3}
   dots:
@@ -2309,7 +2310,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1529648794
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2688,7 +2689,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1787282663}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 392352548}
+        m_TargetAssemblyTypeName: Board, Assembly-CSharp
+        m_MethodName: Undo
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1787282663
 MonoBehaviour:
   m_ObjectHideFlags: 0
