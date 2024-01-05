@@ -23,10 +23,13 @@ public class LevelButton : MonoBehaviour
     public GameObject confirmPanel;
 
     private GameData gameData;
+    public SoundManagerSplash soundManagerSplash;
+
     // Start is called before the first frame update
     void Start()
     {
         gameData = FindObjectOfType<GameData>();
+        soundManagerSplash = FindObjectOfType<SoundManagerSplash>();
         buttonImage = GetComponent<Image>();
         myButton = GetComponent<Button>();
         LoadData();
@@ -68,13 +71,8 @@ public class LevelButton : MonoBehaviour
     void GetLevel() {
         levelText.text = "" + level;
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     public void ComfirmPanel(int level) {
+        soundManagerSplash.PlayClickNoise();
         confirmPanel.GetComponent<ConfirmPanel>().level = level;
         confirmPanel.SetActive(true);
     }

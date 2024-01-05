@@ -18,6 +18,8 @@ public class ConfirmPanel : MonoBehaviour
     public Image[] stars;
     public Text highScoreText;
     public Text starText;
+    public SoundManagerSplash soundManagerSplash;
+
 
     void OnEnable()
     {
@@ -25,6 +27,9 @@ public class ConfirmPanel : MonoBehaviour
         LoadData();         //i think that we could reference it to the level button class instead
         ActiveStars();
         SetText();
+    }
+    private void Start() {
+        soundManagerSplash = FindObjectOfType<SoundManagerSplash>();
     }
     void LoadData() {
         if(gameData != null) {
@@ -36,21 +41,17 @@ public class ConfirmPanel : MonoBehaviour
         highScoreText.text = "" + highScore;
         starText.text = "" + startsActive + "/3";
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     void ActiveStars() {
         for (int i = 0; i < startsActive; i++) {
             stars[i].enabled = true;
         }
     }
     public void Cancel() {
+        soundManagerSplash.PlayClickNoise();
         this.gameObject.SetActive(false);
     }
     public void Play() {
+        soundManagerSplash.PlayClickNoise();
         PlayerPrefs.SetInt("Current Level", level - 1);
         SceneManager.LoadScene(levelToLoad);
     }
