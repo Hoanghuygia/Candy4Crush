@@ -4,6 +4,7 @@ using System.Diagnostics.Contracts;
 using System.Security.Cryptography;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public enum GameState {
     wait,
@@ -45,10 +46,12 @@ public class Board : MonoBehaviour{
     private BackgroundTile[,] breakableTiles;
     public GameObject[,] allDots;
 
+
     public string[,] beforeSwipeTag;
     public string[,] currentDotsTag;
     public Stacks UndoStack;
     public Dot currentDot;
+    private EndGameManager endGameManager;
     private FindMatches findMatches;
     private SoundManager soundManager;
     private GoalManager goalManager;
@@ -86,6 +89,7 @@ public class Board : MonoBehaviour{
         scoreManager = FindObjectOfType<ScoreManager>();
         soundManager = FindObjectOfType<SoundManager>();
         goalManager = FindObjectOfType<GoalManager>();
+        endGameManager = FindObjectOfType<EndGameManager>();
         blankSpaces = new bool[width, height];
         breakableTiles = new BackgroundTile[width, height];
         allDots = new GameObject[width, height];
@@ -95,8 +99,11 @@ public class Board : MonoBehaviour{
         currentState = GameState.pause;
     }
     public void Undo() {
-        if(UndoStack != null && !UndoStack.Empty()) {
+        if(UndoStack != null && !UndoStack.Empty() && endGameManager.currentUndoTimeCounter > 0) {
+            Debug.Log("Number of undo: " + endGameManager.currentUndoTimeCounter);
             LoadBoardFromStack();
+            endGameManager.currentUndoTimeCounter--;
+            Debug.Log("Number of undo: " + endGameManager.currentUndoTimeCounter);
         }
         if (UndoStack.Empty()) {
             Debug.Log("The stack is empty!!!");

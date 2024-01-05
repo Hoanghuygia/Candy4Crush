@@ -13,6 +13,7 @@ public enum GameType {
 public class EndGameRequirements {
     public GameType gameType;
     public int counterValue;
+    public int undoTimeValue;
 }
 public class EndGameManager : MonoBehaviour
 {
@@ -23,7 +24,9 @@ public class EndGameManager : MonoBehaviour
     public GameObject winPanel;
     public GameObject tryAgainPanel;
     public Text counter;
+    public Text UndoTime;
 
+    public int currentUndoTimeCounter;
     public int currentCounterValue;
     private float timerSecond;
 
@@ -44,6 +47,7 @@ public class EndGameManager : MonoBehaviour
 
     public void SetUpGame() {
         currentCounterValue = requirements.counterValue;
+        currentUndoTimeCounter = requirements.undoTimeValue;
         if(requirements.gameType == GameType.Moves) {
             movesLabel.SetActive(true);
             timeLabel.SetActive(false);
@@ -54,6 +58,7 @@ public class EndGameManager : MonoBehaviour
             timeLabel.SetActive(true);
         }
         counter.text = "" + currentCounterValue;
+        UndoTime.text = "" + currentUndoTimeCounter;
     }
     public void DecreaseCounterValue() {
         if(board.currentState == GameState.move) {         //i think that we need to let it more specific by ==move, he use != pause
@@ -90,5 +95,6 @@ public class EndGameManager : MonoBehaviour
                 timerSecond = 1;
             }
         }
+        UndoTime.text = "" + currentUndoTimeCounter;
     }
 }
