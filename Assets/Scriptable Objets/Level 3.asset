@@ -34,6 +34,7 @@ MonoBehaviour:
   endGameRequirements:
     gameType: 0
     counterValue: 10
+    undoTimeValue: 3
   levelGoal:
   - numberNeeded: 2
     numberCollected: 0

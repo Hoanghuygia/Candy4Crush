@@ -25,6 +25,7 @@ MonoBehaviour:
   endGameRequirements:
     gameType: 1
     counterValue: 90
+    undoTimeValue: 3
   levelGoal:
   - numberNeeded: 5
     numberCollected: 0
