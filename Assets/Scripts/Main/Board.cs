@@ -37,6 +37,8 @@ public class Board : MonoBehaviour{
     public int offSet;
     public int stackSize;
     public int pushTime = 1;
+    public bool sound;
+    public bool music;
     public GameObject tilePrefab;
     public GameObject breakableTilePrefab;
     public GameObject[] dots;
@@ -70,7 +72,18 @@ public class Board : MonoBehaviour{
         if(PlayerPrefs.HasKey("Current Level")) {
             level = PlayerPrefs.GetInt("Current Level");
         }
-        if(level < world.levels.Length) {
+        if (PlayerPrefs.HasKey("Current Sound")) {
+            int storedValue = PlayerPrefs.GetInt("Current Sound");
+            sound = storedValue == 1;
+            Debug.Log("Sound: " + sound);
+        }
+        if (PlayerPrefs.HasKey("Current Music")) {
+            int storeValue = PlayerPrefs.GetInt("Current Music");
+            music = storeValue == 1;
+            Debug.Log("Music: " + music);
+
+        }
+        if (level < world.levels.Length) {
             if (world != null) {
                 if (world.levels[level] != null) {
                     width = world.levels[level].width;

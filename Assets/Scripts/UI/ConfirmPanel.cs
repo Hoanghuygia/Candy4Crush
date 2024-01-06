@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Security.Cryptography;
+using UnityEditor.U2D.Sprites;
 
 public class ConfirmPanel : MonoBehaviour
 {
@@ -18,7 +19,11 @@ public class ConfirmPanel : MonoBehaviour
     public Image[] stars;
     public Text highScoreText;
     public Text starText;
+
+    [Header("Sound stuff")]
     public SoundManagerSplash soundManagerSplash;
+    private int sound;
+    private int music;
 
 
     void OnEnable()
@@ -30,8 +35,10 @@ public class ConfirmPanel : MonoBehaviour
     }
     private void Start() {
         soundManagerSplash = FindObjectOfType<SoundManagerSplash>();
+        sound = soundManagerSplash.sound ? 1 : 0;
+        music = soundManagerSplash.music ? 1 : 0;
     }
-    void LoadData() {
+    void LoadData() {//why we do not load the stars
         if(gameData != null) {
             startsActive = gameData.saveData.stars[level - 1];
             highScore = gameData.saveData.highScore[level - 1];
@@ -52,7 +59,9 @@ public class ConfirmPanel : MonoBehaviour
     }
     public void Play() {
         soundManagerSplash.PlayClickNoise();
-        PlayerPrefs.SetInt("Current Level", level - 1);
+        PlayerPrefs.SetInt("Current Level", level - 1);         //this line is to load to other screen
+        PlayerPrefs.SetInt("Current Sound", sound);
+        PlayerPrefs.SetInt("Current Music", music);
         SceneManager.LoadScene(levelToLoad);
     }
 }
