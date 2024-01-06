@@ -306,6 +306,7 @@ MonoBehaviour:
   destroyNoise:
   - {fileID: 1093290208}
   - {fileID: 382238972}
+  backgroundMusic: {fileID: 173569423}
 --- !u!82 &173569423
 AudioSource:
   m_ObjectHideFlags: 0
@@ -718,6 +719,8 @@ MonoBehaviour:
   offSet: 20
   stackSize: 5
   pushTime: 1
+  sound: 0
+  music: 0
   tilePrefab: {fileID: 4794523875102041569, guid: 4f5b4d3e4e61af84e89a7377e4621e01, type: 3}
   breakableTilePrefab: {fileID: 2461153449465637356, guid: 9d4ca842fd5d3aa439996a0d05930d18, type: 3}
   dots:
