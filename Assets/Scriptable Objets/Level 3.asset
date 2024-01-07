@@ -33,10 +33,18 @@ MonoBehaviour:
   scoreGoals: e00100003002000000040000
   endGameRequirements:
     gameType: 0
-    counterValue: 10
-    undoTimeValue: 3
+    counterValue: 25
+    undoTimeValue: 1
   levelGoal:
-  - numberNeeded: 2
+  - numberNeeded: 6
     numberCollected: 0
     goalSprite: {fileID: 21300000, guid: cac46b71d3c8eb84bb0fd98cbc2663ff, type: 3}
     matchValue: Green
+  - numberNeeded: 6
+    numberCollected: 0
+    goalSprite: {fileID: 21300000, guid: 70e0ef5caeba93041b9cced363d48712, type: 3}
+    matchValue: Red
+  - numberNeeded: 6
+    numberCollected: 0
+    goalSprite: {fileID: 21300000, guid: a993ddbcad3e78c44a35c76680b4dceb, type: 3}
+    matchValue: Purple

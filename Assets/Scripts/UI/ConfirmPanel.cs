@@ -38,7 +38,7 @@ public class ConfirmPanel : MonoBehaviour
         sound = soundManagerSplash.sound ? 1 : 0;
         music = soundManagerSplash.music ? 1 : 0;
     }
-    void LoadData() {//why we do not load the stars
+    void LoadData() {
         if(gameData != null) {
             startsActive = gameData.saveData.stars[level - 1];
             highScore = gameData.saveData.highScore[level - 1];
@@ -60,8 +60,8 @@ public class ConfirmPanel : MonoBehaviour
     public void Play() {
         soundManagerSplash.PlayClickNoise();
         PlayerPrefs.SetInt("Current Level", level - 1);         //this line is to load to other screen
-        PlayerPrefs.SetInt("Current Sound", sound);
         PlayerPrefs.SetInt("Current Music", music);
+        PlayerPrefs.SetInt("Current Sound", sound);
         SceneManager.LoadScene(levelToLoad);
     }
 }

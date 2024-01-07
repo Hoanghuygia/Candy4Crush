@@ -75,13 +75,11 @@ public class Board : MonoBehaviour{
         if (PlayerPrefs.HasKey("Current Sound")) {
             int storedValue = PlayerPrefs.GetInt("Current Sound");
             sound = storedValue == 1;
-            Debug.Log("Sound: " + sound);
+            Debug.Log("Sound" + sound);
         }
         if (PlayerPrefs.HasKey("Current Music")) {
             int storeValue = PlayerPrefs.GetInt("Current Music");
             music = storeValue == 1;
-            Debug.Log("Music: " + music);
-
         }
         if (level < world.levels.Length) {
             if (world != null) {
@@ -109,7 +107,7 @@ public class Board : MonoBehaviour{
         beforeSwipeTag = new string[width, height];
         UndoStack = new Stacks(stackSize);
         SetUp();
-        currentState = GameState.pause;
+        //currentState = GameState.pause;
     }
     public void Undo() {
         if(UndoStack != null && !UndoStack.Empty() && endGameManager.currentUndoTimeCounter > 0) {

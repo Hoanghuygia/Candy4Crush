@@ -22,6 +22,7 @@ public class TileScreenPanel : MonoBehaviour
     public void Turn_offMusic() {
         soundManagerSplash.PlayClickNoise();
         soundManagerSplash.backGroundMusic.mute = true;
+        soundManagerSplash.music = false;
         Sound_2.SetActive(false);
         Sound_2Cancel.SetActive(true);
     }
@@ -34,6 +35,7 @@ public class TileScreenPanel : MonoBehaviour
     public void Turn_onMusic() {
         soundManagerSplash.PlayClickNoise();
         soundManagerSplash.backGroundMusic.mute = false;
+        soundManagerSplash.music = true;
         Sound_2Cancel.SetActive(false);
         Sound_2.SetActive(true);
     }

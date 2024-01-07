@@ -23,9 +23,9 @@ MonoBehaviour:
   - {fileID: 9021656650578996743, guid: 77da4c7aeaa6b3b4ea2519b2bce796fe, type: 3}
   scoreGoals: f000000068010000e0010000
   endGameRequirements:
-    gameType: 1
-    counterValue: 90
-    undoTimeValue: 3
+    gameType: 0
+    counterValue: 25
+    undoTimeValue: 2
   levelGoal:
   - numberNeeded: 5
     numberCollected: 0

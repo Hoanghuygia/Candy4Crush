@@ -11,6 +11,7 @@ public class BackToSplash : MonoBehaviour
     public void WinOK() {
         if(gameData != null) {
             gameData.saveData.ActiveLevel[board.level + 1] = true;
+            //gameData.saveData.stars[board.level] = 3;
             gameData.Save();
         }
         SceneManager.LoadScene(sceneToLoad);

@@ -10519,7 +10519,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sound: 1
-  music: 0
+  music: 1
   clickNoise: {fileID: 2019179605}
   backGroundMusic: {fileID: 2107292481}
 --- !u!1 &2044070613
