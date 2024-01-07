@@ -1873,6 +1873,7 @@ MonoBehaviour:
   scoreBar: {fileID: 1558017154}
   scoreText: {fileID: 1354459862}
   score: 0
+  scoreGoal: 
 --- !u!1 &972883688
 GameObject:
   m_ObjectHideFlags: 0

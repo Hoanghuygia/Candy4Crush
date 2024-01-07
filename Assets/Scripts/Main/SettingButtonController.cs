@@ -55,7 +55,7 @@ public class SettingButtonController : MonoBehaviour
         turnOffMusic.SetActive(true);
     }
     public void EndGameButton() {
-        //endGameManager.LoseGame();
+        endGameManager.LoseGame();
     }
     private void DecideSoundButtonToLoad() {
         if(!board.sound) {
