@@ -75,6 +75,7 @@ public class Board : MonoBehaviour{
         if (PlayerPrefs.HasKey("Current Sound")) {
             int storedValue = PlayerPrefs.GetInt("Current Sound");
             sound = storedValue == 1;
+            Debug.Log("Sound" + sound);
         }
         if (PlayerPrefs.HasKey("Current Music")) {
             int storeValue = PlayerPrefs.GetInt("Current Music");

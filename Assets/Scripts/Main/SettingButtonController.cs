@@ -14,6 +14,8 @@ public class SettingButtonController : MonoBehaviour
     void Start()
     {
         board = FindAnyObjectByType<Board>();
+        DecideSoundButtonToLoad();
+        DecideMusicButtonToLoad();
     }
 
     // Update is called once per frame
@@ -49,5 +51,19 @@ public class SettingButtonController : MonoBehaviour
         board.music = true;
         turnOnMusic.SetActive(false);
         turnOffMusic.SetActive(true);
+    }
+    private void DecideSoundButtonToLoad() {
+        if(!board.sound) {
+            Debug.Log("Huy dep trai 2");
+            turnOffSound.SetActive(false);
+            turnOnSound.SetActive(true);
+        }
+    }
+    private void DecideMusicButtonToLoad() {
+        if (!board.music) {
+            Debug.Log("Huy dep trai");
+            turnOffMusic.SetActive(false);
+            turnOnMusic.SetActive(true);
+        }
     }
 }

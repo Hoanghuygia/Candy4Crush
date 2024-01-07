@@ -61,6 +61,7 @@ public class ConfirmPanel : MonoBehaviour
         soundManagerSplash.PlayClickNoise();
         PlayerPrefs.SetInt("Current Level", level - 1);         //this line is to load to other screen
         PlayerPrefs.SetInt("Current Music", music);
+        PlayerPrefs.SetInt("Current Sound", sound);
         SceneManager.LoadScene(levelToLoad);
     }
 }
