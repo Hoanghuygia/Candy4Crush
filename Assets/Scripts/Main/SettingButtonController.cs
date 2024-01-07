@@ -5,6 +5,7 @@ using UnityEngine;
 public class SettingButtonController : MonoBehaviour
 {
     private Board board;
+    private EndGameManager endGameManager;
     public GameObject settingHolder;
     public GameObject turnOffSound;
     public GameObject turnOnSound;
@@ -14,6 +15,7 @@ public class SettingButtonController : MonoBehaviour
     void Start()
     {
         board = FindAnyObjectByType<Board>();
+        endGameManager = FindAnyObjectByType<EndGameManager>();
         DecideSoundButtonToLoad();
         DecideMusicButtonToLoad();
     }
@@ -51,6 +53,9 @@ public class SettingButtonController : MonoBehaviour
         board.music = true;
         turnOnMusic.SetActive(false);
         turnOffMusic.SetActive(true);
+    }
+    public void EndGameButton() {
+        //endGameManager.LoseGame();
     }
     private void DecideSoundButtonToLoad() {
         if(!board.sound) {
