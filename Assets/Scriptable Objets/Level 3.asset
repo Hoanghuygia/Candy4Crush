@@ -30,10 +30,10 @@ MonoBehaviour:
   - {fileID: 3601970357930638613, guid: a4247c6b75203e54db87b907f8b9d3bc, type: 3}
   - {fileID: 2752850887699840374, guid: 0c801a6e1bbb12f40888b0289672fe59, type: 3}
   - {fileID: 8375765422112767573, guid: 7c555cf029a95654d8d2d5d77f195b85, type: 3}
-  scoreGoals: e00100003002000000040000
+  scoreGoals: e00100003002000088130000
   endGameRequirements:
-    gameType: 0
-    counterValue: 25
+    gameType: 1
+    counterValue: 10
     undoTimeValue: 1
   levelGoal:
   - numberNeeded: 6
