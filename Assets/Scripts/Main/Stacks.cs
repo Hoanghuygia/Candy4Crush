@@ -26,14 +26,14 @@ public class Stacks {
     public string[,] pop() {
         string[,] tempArray = stack[front];
         front--;
-        return tempArray;       //I think that we do not need to check it empty or full because
+        return tempArray;       
     }
 
     public string[,] peek() {
         return stack[front];
     }
     public void DeleteRear() {
-        if (front == max - 1) {          //Only do this function when the stack is full
+        if (front == max - 1) {          
             for (int i = 0; i < stack.Length - 1; i++) {
                 stack[i] = stack[i + 1];
             }

@@ -276,7 +276,7 @@ public class Board : MonoBehaviour{
                             currentDot.MakeColorBomb();
                         }
                     }
-                    else {//i dont know this case
+                    else {
                         if(currentDot.otherDot != null) {
                             Dot otherDot = currentDot.otherDot.GetComponent<Dot>();
                             if (otherDot.Matched) {
